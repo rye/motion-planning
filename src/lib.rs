@@ -90,7 +90,7 @@ mod tests {
 	use super::*;
 
 	#[test]
-	fn hermite_works() {
+	fn hermite_works_in_a_straight_line() {
 		let segment: Segment<Pose<Vec3d<f64>>> = Segment {
 			start: Pose {
 				position: (0.0, 0.0, 0.0).into(),
