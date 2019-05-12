@@ -1,0 +1,6 @@
+# Built Rust artifacts
+/target
+
+# Ignore Cargo.lock (even though this is a bin+lib, we are smart and
+# know how to manage our dependencies)
+/Cargo.lock
