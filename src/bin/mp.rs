@@ -23,6 +23,4 @@ fn main() {
 		println!("{},{},{},{}", t, pos.x, pos.y, pos.z);
 
 	}
-
-	//println!("Hello, world!");
 }
