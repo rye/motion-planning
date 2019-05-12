@@ -1,15 +1,15 @@
 trait Position {}
 
 #[derive(Debug, PartialEq)]
-struct Vec3d<V> {
-	x: V,
-	y: V,
-	z: V,
+pub struct Vec3d<V> {
+	pub x: V,
+	pub y: V,
+	pub z: V,
 }
 
 impl<V> std::convert::From<(V, V, V)> for Vec3d<V> {
 	fn from(xyz: (V, V, V)) -> Self {
-		Vec3d {
+		Self {
 			x: xyz.0,
 			y: xyz.1,
 			z: xyz.2,
@@ -47,19 +47,19 @@ where
 	}
 }
 
-struct Pose<V> {
-	position: V,
-	velocity: V,
-	acceleration: V,
+pub struct Pose<V> {
+	pub position: V,
+	pub velocity: V,
+	pub acceleration: V,
 }
 
-struct Segment<V> {
-	start: V,
-	end: V,
+pub struct Segment<V> {
+	pub start: V,
+	pub end: V,
 }
 
 impl Segment<Pose<Vec3d<f64>>> {
-	fn position_at(&self, t: f64) -> Vec3d<f64> {
+	pub fn position_at(&self, t: f64) -> Vec3d<f64> {
 		let p0 = &self.start.position;
 		let v0 = &self.start.velocity;
 		let a0 = &self.start.acceleration;
