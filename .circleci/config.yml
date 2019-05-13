@@ -26,15 +26,36 @@ commands:
       - run: rustup component add rustfmt-preview
       - run: cargo fmt --verbose --all -- --check
 
+  uncache-tarpaulin:
+    steps:
+      - restore_cache:
+          keys:
+            - tarpaulin-v1-{{ .Branch }}-{{ .Revision }}
+            - tarpaulin-v1-{{ .Branch }}-
+            - tarpaulin-v1-
+
+  cache-tarpaulin:
+    steps:
+      - save_cache:
+          key: tarpaulin-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - "~/.cargo"
+            - "~/.profile"
+
+  install-tarpaulin:
+    steps:
+      - run: sudo apt-get update && sudo apt-get install -qy curl libssl-dev pkg-config
+      - run: curl -sSf https://sh.rustup.rs | sh -s -- -y
+      - run: echo 'source $HOME/.cargo/env' >> ~/.profile
+      - run: . ~/.profile && RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin -f
+
   tarpaulin:
     steps:
-      - run: apt-get update && apt-get install -qy libssl-dev pkg-config
-      - run: RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin -f
-      - run: cargo tarpaulin --out Xml
+      - run: . ~/.profile && cargo tarpaulin --out Xml
 
   codecov:
     steps:
-      - run: apt-get update && apt-get install -qy curl
+      - run: sudo apt-get update && sudo apt-get install -qy curl
       - run: bash <(curl -s https://codecov.io/bash)
 
   test:
@@ -69,6 +90,7 @@ jobs:
     steps:
       - checkout
       - clippy
+
   fmt:
     executor: rust-nightly
     steps:
@@ -76,11 +98,14 @@ jobs:
       - fmt
 
   coverage:
-    executor: rust-nightly
+    machine: true
     steps:
+      - uncache-tarpaulin
+      - install-tarpaulin
       - checkout
       - tarpaulin
       - codecov
+      - cache-tarpaulin
 
   test-nightly:
     executor: rust-nightly
@@ -110,6 +135,7 @@ workflows:
   version: 2
   commit: &standard_workflow
     jobs:
+      - coverage
       - check-nightly
       - check-latest
       - clippy-nightly
@@ -119,8 +145,6 @@ workflows:
           requires: [check-nightly, clippy-nightly, fmt]
       - test-latest:
           requires: [check-latest, clippy-latest, fmt]
-      - coverage:
-          requires: [test-nightly]
       - build-release-nightly:
           requires: [test-nightly]
       - build-release-latest:
