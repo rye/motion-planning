@@ -17,7 +17,7 @@ fn main() {
 	};
 
 	for t in 0..1000 {
-		let t: f64 = t as f64 * 0.001;
+		let t: f64 = f64::from(t) * 0.001;
 		let pos = segment.position_at(t);
 
 		println!("{},{},{},{}", t, pos.0, pos.1, pos.2);
