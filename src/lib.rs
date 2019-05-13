@@ -1,21 +1,7 @@
 trait Position {}
 
 #[derive(Debug, PartialEq)]
-pub struct Vec3d<V> {
-	pub x: V,
-	pub y: V,
-	pub z: V,
-}
-
-impl<V> std::convert::From<(V, V, V)> for Vec3d<V> {
-	fn from(xyz: (V, V, V)) -> Self {
-		Self {
-			x: xyz.0,
-			y: xyz.1,
-			z: xyz.2,
-		}
-	}
-}
+pub struct Vec3d<V>(pub V, pub V, pub V);
 
 impl<T: std::ops::Mul<T> + Copy> std::ops::Mul<T> for &Vec3d<T>
 where
@@ -25,9 +11,9 @@ where
 
 	fn mul(self, scalar: T) -> Vec3d<T> {
 		Vec3d {
-			x: (self.x * scalar).into(),
-			y: (self.y * scalar).into(),
-			z: (self.z * scalar).into(),
+			0: (self.0 * scalar).into(),
+			1: (self.1 * scalar).into(),
+			2: (self.2 * scalar).into(),
 		}
 	}
 }
@@ -40,9 +26,9 @@ where
 
 	fn add(self, other: Vec3d<T>) -> Vec3d<T> {
 		Vec3d {
-			x: (self.x + other.x).into(),
-			y: (self.y + other.y).into(),
-			z: (self.z + other.z).into(),
+			0: (self.0 + other.0).into(),
+			1: (self.1 + other.1).into(),
+			2: (self.2 + other.2).into(),
 		}
 	}
 }
@@ -93,21 +79,21 @@ mod tests {
 	fn hermite_works_in_a_straight_line() {
 		let segment: Segment<Pose<Vec3d<f64>>> = Segment {
 			start: Pose {
-				position: (0.0, 0.0, 0.0).into(),
-				velocity: (0.0, 0.0, 0.0).into(),
-				acceleration: (0.0, 0.0, 0.0).into(),
+				position: Vec3d(0.0, 0.0, 0.0),
+				velocity: Vec3d(0.0, 0.0, 0.0),
+				acceleration: Vec3d(0.0, 0.0, 0.0),
 			},
 			end: Pose {
-				position: (0.0, 1.0, 0.0).into(),
-				velocity: (0.0, 0.0, 0.0).into(),
-				acceleration: (0.0, 0.0, 0.0).into(),
+				position: Vec3d(0.0, 1.0, 0.0),
+				velocity: Vec3d(0.0, 0.0, 0.0),
+				acceleration: Vec3d(0.0, 0.0, 0.0),
 			},
 		};
 
 		assert_eq!(segment.position_at(0.0), segment.start.position);
-		assert_eq!(segment.position_at(0.25), (0.0, 0.103515625, 0.0).into());
-		assert_eq!(segment.position_at(0.5), (0.0, 0.5, 0.0).into());
-		assert_eq!(segment.position_at(0.75), (0.0, 0.896484375, 0.0).into());
+		assert_eq!(segment.position_at(0.25), Vec3d(0.0, 0.103515625, 0.0));
+		assert_eq!(segment.position_at(0.5), Vec3d(0.0, 0.5, 0.0));
+		assert_eq!(segment.position_at(0.75), Vec3d(0.0, 0.896484375, 0.0));
 		assert_eq!(segment.position_at(1.0), segment.end.position);
 	}
 }
