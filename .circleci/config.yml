@@ -43,7 +43,7 @@ commands:
 
   install-tarpaulin:
     steps:
-      - run: apt-get update && apt-get install -qy libssl-dev pkg-config
+      - run: sudo apt-get update && sudo apt-get install -qy libssl-dev pkg-config
       - run: RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin -f
 
   tarpaulin:
@@ -52,7 +52,7 @@ commands:
 
   codecov:
     steps:
-      - run: apt-get update && apt-get install -qy curl
+      - run: sudo apt-get update && sudo apt-get install -qy curl
       - run: bash <(curl -s https://codecov.io/bash)
 
   test:
