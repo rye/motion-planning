@@ -40,15 +40,18 @@ commands:
           key: tarpaulin-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - "~/.cargo"
+            - "~/.profile"
 
   install-tarpaulin:
     steps:
-      - run: sudo apt-get update && sudo apt-get install -qy libssl-dev pkg-config
-      - run: RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin -f
+      - run: sudo apt-get update && sudo apt-get install -qy curl libssl-dev pkg-config
+      - run: curl -sSf https://sh.rustup.rs | sh -s -- -y
+      - run: echo 'source $HOME/.cargo/env' >> ~/.profile
+      - run: . ~/.profile && RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin -f
 
   tarpaulin:
     steps:
-      - run: cargo tarpaulin --out Xml
+      - run: . ~/.profile && cargo tarpaulin --out Xml
 
   codecov:
     steps:
