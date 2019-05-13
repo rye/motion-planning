@@ -31,7 +31,6 @@ commands:
       - run: apt-get update && apt-get install -qy libssl-dev pkg-config
       - run: RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin -f
 
-
   tarpaulin:
     steps:
       - run: cargo tarpaulin --out Xml
@@ -86,7 +85,7 @@ jobs:
       - fmt
 
   coverage:
-    executor: machine
+    machine: true
     steps:
       - checkout
       - tarpaulin
