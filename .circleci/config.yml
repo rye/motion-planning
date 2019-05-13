@@ -26,6 +26,21 @@ commands:
       - run: rustup component add rustfmt-preview
       - run: cargo fmt --verbose --all -- --check
 
+  uncache-tarpaulin:
+    steps:
+      - restore_cache:
+          keys:
+            - tarpaulin-v1-{{ .Branch }}-{{ .Revision }}
+            - tarpaulin-v1-{{ .Branch }}-
+            - tarpaulin-v1-
+
+  cache-tarpaulin:
+    steps:
+      - save_cache:
+          key: tarpaulin-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - "~/.cargo"
+
   install-tarpaulin:
     steps:
       - run: apt-get update && apt-get install -qy libssl-dev pkg-config
@@ -61,11 +76,6 @@ jobs:
       - checkout
       - check
 
-  install-tarpaulin:
-    executor: rust-nightly
-    steps:
-      - install-tarpaulin
-
   clippy-nightly:
     executor: rust-nightly
     steps:
@@ -87,9 +97,12 @@ jobs:
   coverage:
     machine: true
     steps:
+      - uncache-tarpaulin
+      - install-tarpaulin
       - checkout
       - tarpaulin
       - codecov
+      - cache-tarpaulin
 
   test-nightly:
     executor: rust-nightly
@@ -119,18 +132,16 @@ workflows:
   version: 2
   commit: &standard_workflow
     jobs:
+      - coverage
       - check-nightly
       - check-latest
       - clippy-nightly
       - clippy-latest
-      - install-tarpaulin
       - fmt
       - test-nightly:
           requires: [check-nightly, clippy-nightly, fmt]
       - test-latest:
           requires: [check-latest, clippy-latest, fmt]
-      - coverage:
-          requires: [install-tarpaulin, test-nightly]
       - build-release-nightly:
           requires: [test-nightly]
       - build-release-latest:
