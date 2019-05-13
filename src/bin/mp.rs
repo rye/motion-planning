@@ -21,6 +21,5 @@ fn main() {
 		let pos = segment.position_at(t);
 
 		println!("{},{},{},{}", t, pos.0, pos.1, pos.2);
-
 	}
 }
