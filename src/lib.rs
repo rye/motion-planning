@@ -144,10 +144,12 @@ where
 			let h45 = h_5(t, 4);
 			let h55 = h_5(t, 5);
 
-			Some((*p0 * h05) + (*v0 * h15) + (*a0 * h25) + (*a1 * h35) + (*v1 * h45) + (*p1 * h55))
-		} else {
-			None
+			return Some(
+				(*p0 * h05) + (*v0 * h15) + (*a0 * h25) + (*a1 * h35) + (*v1 * h45) + (*p1 * h55),
+			);
 		}
+
+		None
 	}
 
 	fn velocity_at(&self, t: f64) -> Option<V> {
@@ -169,10 +171,12 @@ where
 			let h45p = h_5p(t, 4);
 			let h55p = h_5p(t, 5);
 
-			Some((*p0 * h05p) + (*v0 * h15p) + (*a0 * h25p) + (*a1 * h35p) + (*v1 * h45p) + (*p1 * h55p))
-		} else {
-			None
+			return Some(
+				(*p0 * h05p) + (*v0 * h15p) + (*a0 * h25p) + (*a1 * h35p) + (*v1 * h45p) + (*p1 * h55p),
+			);
 		}
+
+		None
 	}
 }
 
