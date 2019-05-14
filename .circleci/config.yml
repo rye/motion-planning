@@ -18,7 +18,7 @@ commands:
   clippy:
     description: Run Clippy
     steps:
-      - run: rustup component add clippy || cargo install --git ssh://git@github.com/rust-lang/rust-clippy.git --force clippy
+      - run: rustup component add clippy
       - run: cargo clippy --verbose --all-features -- -D warnings
 
   fmt:
@@ -79,13 +79,7 @@ jobs:
       - checkout
       - check
 
-  clippy-nightly:
-    executor: rust-nightly
-    steps:
-      - checkout
-      - clippy
-
-  clippy-latest:
+  clippy:
     executor: rust-latest
     steps:
       - checkout
@@ -138,13 +132,12 @@ workflows:
       - coverage
       - check-nightly
       - check-latest
-      - clippy-nightly
-      - clippy-latest
+      - clippy
       - fmt
       - test-nightly:
-          requires: [check-nightly, clippy-nightly, fmt]
+          requires: [check-nightly, clippy, fmt]
       - test-latest:
-          requires: [check-latest, clippy-latest, fmt]
+          requires: [check-latest, clippy, fmt]
       - build-release-nightly:
           requires: [test-nightly]
       - build-release-latest:
