@@ -80,14 +80,18 @@ fn h_5p(t: f64, n: usize) -> f64 {
 	}
 }
 
+#[derive(Debug, PartialEq)]
 pub struct Pose<V> {
 	pub position: V,
 	pub velocity: V,
 	pub acceleration: V,
 }
 
+#[derive(Debug, PartialEq)]
+pub struct Segment<'a, V>(f64, &'a Pose<V>, &'a Pose<V>);
+
 pub trait Path<V> {
-	fn get_segment(&self, t: f64) -> Option<(f64, &Pose<V>, &Pose<V>)>;
+	fn get_segment(&self, t: f64) -> Option<Segment<V>>;
 	fn position_at(&self, t: f64) -> Option<V>;
 	fn velocity_at(&self, t: f64) -> Option<V>;
 }
@@ -98,7 +102,7 @@ where
 	V: std::ops::Mul<f64, Output = V>,
 	V: std::ops::Add<V, Output = V>,
 {
-	fn get_segment(&self, t: f64) -> Option<(f64, &Pose<V>, &Pose<V>)> {
+	fn get_segment(&self, t: f64) -> Option<Segment<V>> {
 		let length = self.len();
 
 		// If our container (Vec) has length 0, we cannot find a segment!.
@@ -118,7 +122,7 @@ where
 
 		assert!(0.0f64 <= t && t <= 1.0f64, "{} not in [0., 1.]", t);
 
-		Some((t, prec, succ))
+		Some(Segment(t, prec, succ))
 	}
 
 	fn position_at(&self, t: f64) -> Option<V> {
@@ -127,7 +131,7 @@ where
 		if anchors.is_none() {
 			None
 		} else {
-			let (t, prec, succ) = anchors.unwrap();
+			let Segment(t, prec, succ) = anchors.unwrap();
 
 			let Pose {
 				position: p0,
@@ -157,7 +161,7 @@ where
 		if anchors.is_none() {
 			None
 		} else {
-			let (t, prec, succ) = anchors.unwrap();
+			let Segment(t, prec, succ) = anchors.unwrap();
 
 			let Pose {
 				position: p0,
