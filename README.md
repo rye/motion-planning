@@ -19,10 +19,11 @@ where
 }
 ```
 
-The advantage of doing it this way is that `V` can be any
-`Copy, Mul<f64, Output=V>, Add<V, Output=V>` type; this means that linear
+The advantage of doing it this way is that `V` can be any `Copy`,
+`Mul<f64, Output=V>`, `Add<V, Output=V>` type; this means that linear
 actuation is supported with no additional code, as is _n_-dimensional vectors
-provided that they have implementations to support it.
+provided that they have implementations to support it.  This means that our API
+flexibly handles all data types for which these traits are implemented!
 
 We also added a `Vec3d(V, V, V)` tuple struct and a couple of other things that
 are all transparently supported.
