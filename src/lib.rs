@@ -47,6 +47,39 @@ where
 	}
 }
 
+fn h_5(t: f64, n: usize) -> f64 {
+	let t2 = t.powi(2);
+	let t3 = t.powi(3);
+	let t4 = t.powi(4);
+	let t5 = t.powi(5);
+
+	match n {
+		0 => 1. - 10. * t3 + 15. * t4 - 6. * t5,
+		1 => t - 6. * t3 + 8. * t4 - 3. * t5,
+		2 => 0.5 * t2 - 1.5 * t3 + 1.5 * t4 - 0.5 * t5,
+		3 => 0.5 * t3 - t4 + 0.5 * t5,
+		4 => -4. * t3 + 7. * t4 - 3. * t5,
+		5 => 10. * t3 - 15. * t4 + 6. * t5,
+		_ => unimplemented!(),
+	}
+}
+
+fn h_5p(t: f64, n: usize) -> f64 {
+	let t2 = t.powi(2);
+	let t3 = t.powi(3);
+	let t4 = t.powi(4);
+
+	match n {
+		0 => -30. * t2 + 60. * t3 - 30. * t4,
+		1 => 1. - 18. * t2 + 32. * t3 - 15. * t4,
+		2 => t - 4.5 * t2 + 6. * t3 - 2.5 * t4,
+		3 => 1.5 * t2 - 4. * t3 + 2.5 * t4,
+		4 => -12. * t2 + 28. * t3 - 15. * t4,
+		5 => 30. * t2 - 60. * t3 + 30. * t4,
+		_ => unimplemented!(),
+	}
+}
+
 pub struct Pose<V> {
 	pub position: V,
 	pub velocity: V,
@@ -89,74 +122,63 @@ where
 	}
 
 	fn position_at(&self, t: f64) -> Option<V> {
-		let length = self.len();
+		let anchors = self.get_segment(t);
 
-		if let 0 = length {
-			return None;
+		if anchors.is_none() {
+			None
+		} else {
+			let (t, prec, succ) = anchors.unwrap();
+
+			let Pose {
+				position: p0,
+				velocity: v0,
+				acceleration: a0,
+			} = prec;
+			let Pose {
+				position: p1,
+				velocity: v1,
+				acceleration: a1,
+			} = succ;
+
+			let h05 = h_5(t, 0);
+			let h15 = h_5(t, 1);
+			let h25 = h_5(t, 1);
+			let h35 = h_5(t, 3);
+			let h45 = h_5(t, 4);
+			let h55 = h_5(t, 5);
+
+			Some((*p0 * h05) + (*v0 * h15) + (*a0 * h25) + (*a1 * h35) + (*v1 * h45) + (*p1 * h55))
 		}
-
-		let prec_idx = (t / length as f64).floor() as usize;
-		let succ_idx = (t / length as f64).ceil() as usize;
-
-		let prec: &Pose<V> = &self[prec_idx];
-		let succ: &Pose<V> = &self[succ_idx];
-
-		let p0 = prec.position;
-		let v0 = prec.velocity;
-		let a0 = prec.acceleration;
-
-		let p1 = succ.position;
-		let v1 = succ.velocity;
-		let a1 = succ.acceleration;
-
-		let t2 = t.powi(2);
-		let t3 = t.powi(3);
-		let t4 = t.powi(4);
-		let t5 = t.powi(5);
-
-		let h05 = 1. - 10. * t3 + 15. * t4 - 6. * t5;
-		let h15 = t - 6. * t3 + 8. * t4 - 3. * t5;
-		let h25 = 0.5 * t2 - 1.5 * t3 + 1.5 * t4 - 0.5 * t5;
-		let h35 = 0.5 * t3 - t4 + 0.5 * t5;
-		let h45 = -4. * t3 + 7. * t4 - 3. * t5;
-		let h55 = 10. * t3 - 15. * t4 + 6. * t5;
-
-		Some((p0 * h05) + (v0 * h15) + (a0 * h25) + (a1 * h35) + (v1 * h45) + (p1 * h55))
 	}
 
 	fn velocity_at(&self, t: f64) -> Option<V> {
-		let length = self.len();
+		let anchors = self.get_segment(t);
 
-		if let 0 = length {
-			return None;
+		if anchors.is_none() {
+			None
+		} else {
+			let (t, prec, succ) = anchors.unwrap();
+
+			let Pose {
+				position: p0,
+				velocity: v0,
+				acceleration: a0,
+			} = prec;
+			let Pose {
+				position: p1,
+				velocity: v1,
+				acceleration: a1,
+			} = succ;
+
+			let h05p = h_5p(t, 0);
+			let h15p = h_5p(t, 1);
+			let h25p = h_5p(t, 2);
+			let h35p = h_5p(t, 3);
+			let h45p = h_5p(t, 4);
+			let h55p = h_5p(t, 5);
+
+			Some((*p0 * h05p) + (*v0 * h15p) + (*a0 * h25p) + (*a1 * h35p) + (*v1 * h45p) + (*p1 * h55p))
 		}
-
-		let prec_idx = (t / length as f64).floor() as usize;
-		let succ_idx = (t / length as f64).ceil() as usize;
-
-		let prec: &Pose<V> = &self[prec_idx];
-		let succ: &Pose<V> = &self[succ_idx];
-
-		let p0 = prec.position;
-		let v0 = prec.velocity;
-		let a0 = prec.acceleration;
-
-		let p1 = succ.position;
-		let v1 = succ.velocity;
-		let a1 = succ.acceleration;
-
-		let t2 = t.powi(2);
-		let t3 = t.powi(3);
-		let t4 = t.powi(4);
-
-		let h05p = -30. * t2 + 60. * t3 - 30. * t4;
-		let h15p = 1. - 18. * t2 + 32. * t3 - 15. * t4;
-		let h25p = t - 4.5 * t2 + 6. * t3 - 2.5 * t4;
-		let h35p = 1.5 * t2 - 4. * t3 + 2.5 * t4;
-		let h45p = -12. * t2 + 28. * t3 - 15. * t4;
-		let h55p = 30. * t2 - 60. * t3 + 30. * t4;
-
-		Some((p0 * h05p) + (v0 * h15p) + (a0 * h25p) + (a1 * h35p) + (v1 * h45p) + (p1 * h55p))
 	}
 }
 
