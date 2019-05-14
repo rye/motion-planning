@@ -112,9 +112,7 @@ where
 
 		// `t` ranges from `0.` to `length * 1.`;
 
-		#[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
 		let prec_idx = t.floor() as usize;
-		#[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
 		let succ_idx = t.ceil() as usize;
 
 		let prec: &Pose<V> = &self[prec_idx];
