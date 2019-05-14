@@ -191,6 +191,44 @@ mod tests {
 	use super::*;
 
 	#[test]
+	fn get_segment_returns_correct_segment() {
+		let mut segment = Vec::new();
+
+		// Start at origin, moving north at 1.0 u/s
+		segment.push(Pose {
+			position: Vec3d(0.0f64, 0.0, 0.0),
+			velocity: Vec3d(0.0, 1.0, 0.0),
+			acceleration: Vec3d(0.0, 0.0, 0.0),
+		});
+
+		// Stop at (0,1,0)
+		segment.push(Pose {
+			position: Vec3d(0.0f64, 1.0, 0.0),
+			velocity: Vec3d(0.0, 0.0, 0.0),
+			acceleration: Vec3d(0.0, 0.0, 0.0),
+		});
+
+		// Accelerate through (0,2,0), moving north at 1.0 u/s
+		segment.push(Pose {
+			position: Vec3d(0.0f64, 2.0, 0.0),
+			velocity: Vec3d(0.0, 1.0, 0.0),
+			acceleration: Vec3d(0.0, 0.0, 0.0),
+		});
+
+		let subdiv = 4.;
+
+		for t in 0..=(2 * subdiv as usize) {
+			let t = t as f64 / subdiv;
+
+			if t.fract() == 0. {
+				assert_eq!(segment.get_segment(t), Some(Segment(t.fract(), &segment[t as usize], &segment[t as usize])));
+			} else {
+				assert_eq!(segment.get_segment(t), Some(Segment(t.fract(), &segment[t as usize], &segment[(t+1.) as usize])));
+			}
+		}
+	}
+
+	#[test]
 	fn vec_addition() {
 		let a: Vec3d<f32> = Vec3d(1.0, 2.0, 3.0);
 		let b: Vec3d<f32> = Vec3d(5.0, 4.0, 3.0);
