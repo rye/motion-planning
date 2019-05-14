@@ -229,6 +229,13 @@ mod tests {
 	}
 
 	#[test]
+	fn get_segment_returns_none_on_zero_length_vec() {
+		let segment: Vec<Pose<Vec3d<f64>>> = Vec::new();
+
+		assert_eq!(segment.get_segment(0.5), None);
+	}
+
+	#[test]
 	fn vec_addition() {
 		let a: Vec3d<f32> = Vec3d(1.0, 2.0, 3.0);
 		let b: Vec3d<f32> = Vec3d(5.0, 4.0, 3.0);
