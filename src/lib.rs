@@ -8,10 +8,10 @@ where
 	V: std::convert::From<V>,
 	V: std::ops::Neg<Output = V>,
 {
-	type Output = Vec3d<V>;
+	type Output = Self;
 
-	fn neg(self) -> Vec3d<V> {
-		Vec3d(-self.0, -self.1, -self.2)
+	fn neg(self) -> Self {
+		Self(-self.0, -self.1, -self.2)
 	}
 }
 
@@ -24,7 +24,7 @@ where
 	type Output = Vec3d<T>;
 
 	fn mul(self, scalar: T) -> Vec3d<T> {
-		Vec3d(
+		Self(
 			scalar * self.0.into(),
 			scalar * self.1.into(),
 			scalar * self.2.into(),
@@ -36,14 +36,14 @@ impl<T: std::ops::Add<T>> std::ops::Add<Vec3d<T>> for Vec3d<T>
 where
 	T: std::convert::From<<T as std::ops::Add>::Output>,
 {
-	type Output = Vec3d<T>;
+	type Output = Self;
 
-	fn add(self, other: Vec3d<T>) -> Vec3d<T> {
-		Vec3d {
-			0: (self.0 + other.0).into(),
-			1: (self.1 + other.1).into(),
-			2: (self.2 + other.2).into(),
-		}
+	fn add(self, other: Self) -> Self {
+		Self(
+			(self.0 + other.0).into(),
+			(self.1 + other.1).into(),
+			(self.2 + other.2).into(),
+		)
 	}
 }
 
@@ -120,7 +120,7 @@ where
 
 		let t = t.fract();
 
-		assert!(0.0f64 <= t && t <= 1.0f64, "{} not in [0., 1.]", t);
+		assert!(0.0_f64 <= t && t <= 1.0_f64, "{} not in [0., 1.]", t);
 
 		Some(Segment(t, prec, succ))
 	}
