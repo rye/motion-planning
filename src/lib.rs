@@ -307,6 +307,13 @@ mod tests {
 	}
 
 	#[test]
+	fn velocity_length_zero() {
+		let segment: Vec<Pose<Vec3d<f64>>> = Vec::new();
+
+		assert_eq!(segment.velocity_at(0.0), None);
+	}
+
+	#[test]
 	fn velocity_correct_straight_line_opp_starts() {
 		let mut segment = Vec::new();
 
@@ -392,12 +399,5 @@ mod tests {
 		assert_eq!(segment.velocity_at(1.0), Some(segment[1].velocity));
 		assert_eq!(segment.position_at(2.0), Some(segment[2].position));
 		assert_eq!(segment.velocity_at(2.0), Some(segment[2].velocity));
-	}
-
-	#[test]
-	fn velocity_length_zero() {
-		let segment: Vec<Pose<Vec3d<f64>>> = Vec::new();
-
-		assert_eq!(segment.velocity_at(0.0), None);
 	}
 }
