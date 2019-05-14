@@ -3,6 +3,18 @@ trait Position {}
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Vec3d<V>(pub V, pub V, pub V);
 
+impl<V> std::ops::Neg for Vec3d<V>
+where
+	V: std::convert::From<V>,
+	V: std::ops::Neg<Output = V>,
+{
+	type Output = Vec3d<V>;
+
+	fn neg(self) -> Vec3d<V> {
+		Vec3d(-self.0, -self.1, -self.2)
+	}
+}
+
 impl<T, V> std::ops::Mul<T> for Vec3d<V>
 where
 	T: std::ops::Mul<T, Output = T>,
@@ -104,6 +116,13 @@ mod tests {
 		let b: Vec3d<f32> = Vec3d(5.0, 4.0, 3.0);
 
 		assert_eq!(a + b, Vec3d(6., 6., 6.));
+	}
+
+	#[test]
+	fn vec_negation() {
+		let vec: Vec3d<f32> = Vec3d(1.0, 2.0, 3.0);
+
+		assert_eq!(-vec, Vec3d(-1.0, -2.0, -3.0));
 	}
 
 	#[test]
