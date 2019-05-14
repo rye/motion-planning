@@ -128,11 +128,7 @@ where
 	fn position_at(&self, t: f64) -> Option<V> {
 		let anchors = self.get_segment(t);
 
-		if anchors.is_none() {
-			None
-		} else {
-			let Segment(t, prec, succ) = anchors.unwrap();
-
+		if let Some(Segment(t, prec, succ)) = anchors {
 			let p0 = &prec.position;
 			let v0 = &prec.velocity;
 			let a0 = &prec.acceleration;
@@ -149,17 +145,15 @@ where
 			let h55 = h_5(t, 5);
 
 			Some((*p0 * h05) + (*v0 * h15) + (*a0 * h25) + (*a1 * h35) + (*v1 * h45) + (*p1 * h55))
+		} else {
+			None
 		}
 	}
 
 	fn velocity_at(&self, t: f64) -> Option<V> {
 		let anchors = self.get_segment(t);
 
-		if anchors.is_none() {
-			None
-		} else {
-			let Segment(t, prec, succ) = anchors.unwrap();
-
+		if let Some(Segment(t, prec, succ)) = anchors {
 			let p0 = &prec.position;
 			let v0 = &prec.velocity;
 			let a0 = &prec.acceleration;
@@ -176,6 +170,8 @@ where
 			let h55p = h_5p(t, 5);
 
 			Some((*p0 * h05p) + (*v0 * h15p) + (*a0 * h25p) + (*a1 * h35p) + (*v1 * h45p) + (*p1 * h55p))
+		} else {
+			None
 		}
 	}
 }
