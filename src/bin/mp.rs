@@ -23,3 +23,8 @@ fn main() {
 		println!("{},{:?}", t, pos);
 	}
 }
+
+#[test]
+fn main_runs() {
+	assert_eq!(main(), ());
+}
