@@ -18,9 +18,11 @@ fn main() {
 
 	for t in 0..=1000 {
 		let t: f64 = f64::from(t) * 0.001;
-		let pos = segment.position_at(t).unwrap();
 
-		println!("{},{:?}", t, pos);
+		let pos = segment.position_at(t).unwrap();
+		let vel = segment.velocity_at(t).unwrap();
+
+		println!("{},{:?},{:?}", t, pos, vel);
 	}
 }
 
