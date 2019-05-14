@@ -6,10 +6,10 @@ This repository is a proof-of-concept implementation of motion planning in Rust.
 
 We implement one struct, `Pose`, which contains information about the position,
 velocity, and acceleration of the actor at certain key moments.  We implemented
-a trait, `Path`, on all types matching the following key values:
+a trait, `Trajectory`, on all types matching the following key values:
 
 ```rust
-impl<V> Path<V> for std::vec::Vec<Pose<V>>
+impl<V> Trajectory<V> for std::vec::Vec<Pose<V>>
 where
     V: Copy,
     V: std::ops::Mul<f64, Output = V>,
