@@ -28,7 +28,7 @@ flexibly handles all data types for which these traits are implemented!
 We also added a `Vec3d(V, V, V)` tuple struct and a couple of other things that
 are all transparently supported.
 
-### Road Map
+## Road Map
 
 - [ ] Make more types like `Vec3d`.
 - [ ] Implement Trajectory calculation from a Vec of poses (already almost
