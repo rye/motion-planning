@@ -221,9 +221,23 @@ mod tests {
 			let t = t as f64 / subdiv;
 
 			if t.fract() == 0. {
-				assert_eq!(segment.get_segment(t), Some(Segment(t.fract(), &segment[t as usize], &segment[t as usize])));
+				assert_eq!(
+					segment.get_segment(t),
+					Some(Segment(
+						t.fract(),
+						&segment[t as usize],
+						&segment[t as usize]
+					))
+				);
 			} else {
-				assert_eq!(segment.get_segment(t), Some(Segment(t.fract(), &segment[t as usize], &segment[(t+1.) as usize])));
+				assert_eq!(
+					segment.get_segment(t),
+					Some(Segment(
+						t.fract(),
+						&segment[t as usize],
+						&segment[(t + 1.) as usize]
+					))
+				);
 			}
 		}
 	}
