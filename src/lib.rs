@@ -133,16 +133,13 @@ where
 		} else {
 			let Segment(t, prec, succ) = anchors.unwrap();
 
-			let Pose {
-				position: p0,
-				velocity: v0,
-				acceleration: a0,
-			} = prec;
-			let Pose {
-				position: p1,
-				velocity: v1,
-				acceleration: a1,
-			} = succ;
+			let p0 = &prec.position;
+			let v0 = &prec.velocity;
+			let a0 = &prec.acceleration;
+
+			let p1 = &succ.position;
+			let v1 = &succ.velocity;
+			let a1 = &succ.acceleration;
 
 			let h05 = h_5(t, 0);
 			let h15 = h_5(t, 1);
@@ -163,16 +160,13 @@ where
 		} else {
 			let Segment(t, prec, succ) = anchors.unwrap();
 
-			let Pose {
-				position: p0,
-				velocity: v0,
-				acceleration: a0,
-			} = prec;
-			let Pose {
-				position: p1,
-				velocity: v1,
-				acceleration: a1,
-			} = succ;
+			let p0 = &prec.position;
+			let v0 = &prec.velocity;
+			let a0 = &prec.acceleration;
+
+			let p1 = &succ.position;
+			let v1 = &succ.velocity;
+			let a1 = &succ.acceleration;
 
 			let h05p = h_5p(t, 0);
 			let h15p = h_5p(t, 1);
