@@ -28,6 +28,24 @@ flexibly handles all data types for which these traits are implemented!
 We also added a `Vec3d(V, V, V)` tuple struct and a couple of other things that
 are all transparently supported.
 
+### What the Heck is a Quintic Hermite spline?
+
+Say you have a robot.  The robot drives around in paths that you specify, but
+you want to plan the paths so that the robot hits a certain set of key
+positions at certain velocities, accelerations, etc.; but you want your robot
+to last as long as possible, so you don't want to thrash it around.
+
+Since acceleration, velocity, and position are values in motion planning that
+would ideally be smoothly controlled, and since the output of a position or
+velocity equation with a time-parameter is controlled by a total of six of
+these vector parameters, we calculate the outputs of a six-term (degree 5)
+polynomial.  There are plenty of other ways to do this, one of the favorites
+being B&eacute;zier curves.
+
+Quintic refers to the degree of our resulting polynomial&mdash;for position
+calculations we use a degree-5 polynomial, for velocity degree-4, etc.&mdash;
+and Hermite polynomials were developed by Charles Hermite.
+
 ## Road Map
 
 - [ ] Make more types like `Vec3d`.
