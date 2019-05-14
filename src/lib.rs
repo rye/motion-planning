@@ -54,6 +54,7 @@ pub struct Pose<V> {
 }
 
 pub trait Path<V> {
+	fn get_segment(&self, t: f64) -> Option<(f64, &Pose<V>, &Pose<V>)>;
 	fn position_at(&self, t: f64) -> Option<V>;
 	fn velocity_at(&self, t: f64) -> Option<V>;
 }
@@ -64,6 +65,29 @@ where
 	V: std::ops::Mul<f64, Output = V>,
 	V: std::ops::Add<V, Output = V>,
 {
+	fn get_segment(&self, t: f64) -> Option<(f64, &Pose<V>, &Pose<V>)> {
+		let length = self.len();
+
+		// If our container (Vec) has length 0, we cannot find a segment!.
+		if let 0 = length {
+			return None;
+		}
+
+		// `t` ranges from `0.` to `length * 1.`;
+
+		let prec_idx = t.floor() as usize;
+		let succ_idx = t.ceil() as usize;
+
+		let prec: &Pose<V> = &self[prec_idx];
+		let succ: &Pose<V> = &self[succ_idx];
+
+		let t = t.fract();
+
+		assert!(0.0f64 <= t && t <= 1.0f64, "{} not in [0., 1.]", t);
+
+		Some((t, prec, succ))
+	}
+
 	fn position_at(&self, t: f64) -> Option<V> {
 		let length = self.len();
 
