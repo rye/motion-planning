@@ -89,8 +89,39 @@ where
 		Some((p0 * h05) + (v0 * h15) + (a0 * h25) + (a1 * h35) + (v1 * h45) + (p1 * h55))
 	}
 
-	fn velocity_at(&self, _t: f64) -> Option<V> {
-		unimplemented!();
+	fn velocity_at(&self, t: f64) -> Option<V> {
+		let length = self.len();
+
+		if let 0 = length {
+			return None;
+		}
+
+		let prec_idx = (t / length as f64).floor() as usize;
+		let succ_idx = (t / length as f64).ceil() as usize;
+
+		let prec: &Pose<V> = &self[prec_idx];
+		let succ: &Pose<V> = &self[succ_idx];
+
+		let p0 = prec.position;
+		let v0 = prec.velocity;
+		let a0 = prec.acceleration;
+
+		let p1 = succ.position;
+		let v1 = succ.velocity;
+		let a1 = succ.acceleration;
+
+		let t2 = t.powi(2);
+		let t3 = t.powi(3);
+		let t4 = t.powi(4);
+
+		let h05p = -30. * t2 + 60. * t3 - 30. * t4;
+		let h15p = 1. - 18. * t2 + 32. * t3 - 15. * t4;
+		let h25p = t - 4.5 * t2 + 6. * t3 - 2.5 * t4;
+		let h35p = 1.5 * t2 - 4. * t3 + 2.5 * t4;
+		let h45p = -12. * t2 + 28. * t3 - 15. * t4;
+		let h55p = 30. * t2 - 60. * t3 + 30. * t4;
+
+		Some((p0 * h05p) + (v0 * h15p) + (a0 * h25p) + (a1 * h35p) + (v1 * h45p) + (p1 * h55p))
 	}
 }
 
@@ -131,7 +162,7 @@ mod tests {
 	}
 
 	#[test]
-	fn hermite_works_in_a_straight_line() {
+	fn position_correct_straight_line() {
 		let mut segment = Vec::new();
 
 		segment.push(Pose {
@@ -159,9 +190,23 @@ mod tests {
 	}
 
 	#[test]
-	#[should_panic]
-	fn velocity_unimplemented() {
-		let segment: Vec<Pose<Vec3d<f64>>> = Vec::new();
-		segment.velocity_at(0.0);
+	fn velocity_correct_straight_line_opp_starts() {
+		let mut segment = Vec::new();
+
+		segment.push(Pose {
+			position: Vec3d(0.0f64, 0.0, 0.0),
+			velocity: Vec3d(0.0, 1.0, 0.0),
+			acceleration: Vec3d(0.0, 0.0, 0.0),
+		});
+
+		segment.push(Pose {
+			position: Vec3d(0.0f64, 1.0, 0.0),
+			velocity: Vec3d(0.0, -1.0, 0.0),
+			acceleration: Vec3d(0.0, 0.0, 0.0),
+		});
+
+		assert_eq!(segment.velocity_at(0.0), Some(segment[0].velocity));
+		assert_eq!(segment.velocity_at(0.5), Some(Vec3d(0.0, 0.0, 0.0)));
+		assert_eq!(segment.velocity_at(1.0), Some(segment[1].velocity));
 	}
 }
