@@ -201,12 +201,19 @@ mod tests {
 
 		segment.push(Pose {
 			position: Vec3d(0.0f64, 1.0, 0.0),
-			velocity: Vec3d(0.0, -1.0, 0.0),
+			velocity: Vec3d(0.0, 0.0, 0.0),
 			acceleration: Vec3d(0.0, 0.0, 0.0),
 		});
 
 		assert_eq!(segment.velocity_at(0.0), Some(segment[0].velocity));
-		assert_eq!(segment.velocity_at(0.5), Some(Vec3d(0.0, 0.0, 0.0)));
+		assert_eq!(segment.velocity_at(0.5), Some(Vec3d(0.0, 1.4375, 0.0)));
 		assert_eq!(segment.velocity_at(1.0), Some(segment[1].velocity));
+	}
+
+	#[test]
+	fn velocity_length_zero() {
+		let segment: Vec<Pose<Vec3d<f64>>> = Vec::new();
+
+		assert_eq!(segment.velocity_at(0.0), None);
 	}
 }
