@@ -157,4 +157,11 @@ mod tests {
 
 		assert_eq!(segment.position_at(0.0), None);
 	}
+
+	#[test]
+	#[should_panic]
+	fn velocity_unimplemented() {
+		let segment: Vec<Pose<Vec3d<f64>>> = Vec::new();
+		segment.velocity_at(0.0);
+	}
 }
