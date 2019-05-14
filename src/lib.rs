@@ -90,13 +90,13 @@ pub struct Pose<V> {
 #[derive(Debug, PartialEq)]
 pub struct Segment<'a, V>(f64, &'a Pose<V>, &'a Pose<V>);
 
-pub trait Path<V> {
+pub trait Trajectory<V> {
 	fn get_segment(&self, t: f64) -> Option<Segment<V>>;
 	fn position_at(&self, t: f64) -> Option<V>;
 	fn velocity_at(&self, t: f64) -> Option<V>;
 }
 
-impl<V> Path<V> for std::vec::Vec<Pose<V>>
+impl<V> Trajectory<V> for std::vec::Vec<Pose<V>>
 where
 	V: Copy,
 	V: std::ops::Mul<f64, Output = V>,
