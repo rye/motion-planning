@@ -45,9 +45,9 @@ commands:
   install-tarpaulin:
     steps:
       - run: sudo apt-get update && sudo apt-get install -qy curl libssl-dev pkg-config
-      - run: curl -sSf https://sh.rustup.rs | sh -s -- -y
+      - run: cargo --version && rustup --version && rustup update || curl -sSf https://sh.rustup.rs | sh -s -- -y
       - run: echo 'source $HOME/.cargo/env' >> ~/.profile
-      - run: . ~/.profile && RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin -f
+      - run: . ~/.profile && RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin || echo "All good?"
 
   tarpaulin:
     steps:
