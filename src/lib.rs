@@ -229,6 +229,39 @@ mod tests {
 	}
 
 	#[test]
+	fn all_set_points_hit() {
+		let mut segment = Vec::new();
+
+		// Start at origin, moving north at 1.0 u/s
+		segment.push(Pose {
+			position: Vec3d(0.0f64, 0.0, 0.0),
+			velocity: Vec3d(0.0, 1.0, 0.0),
+			acceleration: Vec3d(0.0, 0.0, 0.0),
+		});
+
+		// Stop at (0,1,0)
+		segment.push(Pose {
+			position: Vec3d(0.0f64, 1.0, 0.0),
+			velocity: Vec3d(0.0, 0.0, 0.0),
+			acceleration: Vec3d(0.0, 0.0, 0.0),
+		});
+
+		// Accelerate through (0,2,0), moving north at 1.0 u/s
+		segment.push(Pose {
+			position: Vec3d(0.0f64, 2.0, 0.0),
+			velocity: Vec3d(0.0, 1.0, 0.0),
+			acceleration: Vec3d(0.0, 0.0, 0.0),
+		});
+
+		assert_eq!(segment.position_at(0.0), Some(segment[0].position));
+		assert_eq!(segment.velocity_at(0.0), Some(segment[0].velocity));
+		assert_eq!(segment.position_at(1.0), Some(segment[1].position));
+		assert_eq!(segment.velocity_at(1.0), Some(segment[1].velocity));
+		assert_eq!(segment.position_at(2.0), Some(segment[2].position));
+		assert_eq!(segment.velocity_at(2.0), Some(segment[2].velocity));
+	}
+
+	#[test]
 	fn velocity_length_zero() {
 		let segment: Vec<Pose<Vec3d<f64>>> = Vec::new();
 
