@@ -73,14 +73,13 @@ where
 		let v1 = succ.velocity;
 		let a1 = succ.acceleration;
 
-		let t1 = t;
 		let t2 = t.powi(2);
 		let t3 = t.powi(3);
 		let t4 = t.powi(4);
 		let t5 = t.powi(5);
 
 		let h05 = 1. - 10. * t3 + 15. * t4 - 6. * t5;
-		let h15 = t1 - 6. * t3 + 8. * t4 - 3. * t5;
+		let h15 = t - 6. * t3 + 8. * t4 - 3. * t5;
 		let h25 = 0.5 * t2 - 1.5 * t3 + 1.5 * t4 - 0.5 * t5;
 		let h35 = 0.5 * t3 - t4 + 0.5 * t5;
 		let h45 = -4. * t3 + 7. * t4 - 3. * t5;
