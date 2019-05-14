@@ -275,6 +275,40 @@ mod tests {
 	}
 
 	#[test]
+	fn h_5_correctness() {
+		assert_eq!(h_5(0.0, 0), 1.);
+		assert_eq!(h_5(0.0, 1), 0.);
+		assert_eq!(h_5(0.0, 2), 0.);
+		assert_eq!(h_5(0.0, 3), 0.);
+		assert_eq!(h_5(0.0, 4), 0.);
+		assert_eq!(h_5(0.0, 5), 0.);
+
+		assert_eq!(h_5(1.0, 0), 0.);
+		assert_eq!(h_5(1.0, 1), 0.);
+		assert_eq!(h_5(1.0, 2), 0.);
+		assert_eq!(h_5(1.0, 3), 0.);
+		assert_eq!(h_5(1.0, 4), 0.);
+		assert_eq!(h_5(1.0, 5), 1.);
+	}
+
+	#[test]
+	fn h_5p_correctness() {
+		assert_eq!(h_5p(0.0, 0), 0.);
+		assert_eq!(h_5p(0.0, 1), 1.);
+		assert_eq!(h_5p(0.0, 2), 0.);
+		assert_eq!(h_5p(0.0, 3), 0.);
+		assert_eq!(h_5p(0.0, 4), 0.);
+		assert_eq!(h_5p(0.0, 5), 0.);
+
+		assert_eq!(h_5p(1.0, 0), 0.);
+		assert_eq!(h_5p(1.0, 1), 0.);
+		assert_eq!(h_5p(1.0, 2), 0.);
+		assert_eq!(h_5p(1.0, 3), 0.);
+		assert_eq!(h_5p(1.0, 4), 1.);
+		assert_eq!(h_5p(1.0, 5), 0.);
+	}
+
+	#[test]
 	fn all_set_points_hit() {
 		let mut segment = Vec::new();
 
