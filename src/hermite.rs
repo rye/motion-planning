@@ -32,7 +32,7 @@ pub fn h_5p(t: f64, n: usize) -> f64 {
 }
 
 #[test]
-fn h_5_correctness() {
+fn h_5_is_correct() {
 	assert_eq!(h_5(0.0, 0), 1.);
 	assert_eq!(h_5(0.0, 1), 0.);
 	assert_eq!(h_5(0.0, 2), 0.);
@@ -49,7 +49,7 @@ fn h_5_correctness() {
 }
 
 #[test]
-fn h_5p_correctness() {
+fn h_5p_is_correct() {
 	assert_eq!(h_5p(0.0, 0), 0.);
 	assert_eq!(h_5p(0.0, 1), 1.);
 	assert_eq!(h_5p(0.0, 2), 0.);
