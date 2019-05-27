@@ -5,3 +5,6 @@ authors = ["Kristofer Rye <kristofer.rye@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+
+[dev-dependencies]
+rand = "0.6.5"
