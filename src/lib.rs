@@ -170,7 +170,12 @@ where
 			let h55pp = h_5pp(t, 5);
 
 			return Some(
-				(*p0 * h05pp) + (*v0 * h15pp) + (*a0 * h25pp) + (*a1 * h35pp) + (*v1 * h45pp) + (*p1 * h55pp),
+				(*p0 * h05pp)
+					+ (*v0 * h15pp)
+					+ (*a0 * h25pp)
+					+ (*a1 * h35pp)
+					+ (*v1 * h45pp)
+					+ (*p1 * h55pp),
 			);
 		}
 
