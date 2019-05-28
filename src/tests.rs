@@ -68,6 +68,13 @@ fn vec_addition() {
 }
 
 #[test]
+fn vec_display() {
+	let v: Vec3d<f32> = Vec3d(0., 1.25, 4.);
+
+	assert_eq!(format!("{}", v), "(0,1.25,4)");
+}
+
+#[test]
 fn vec_negation() {
 	let vec: Vec3d<f32> = Vec3d(1.0, 2.0, 3.0);
 
