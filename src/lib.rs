@@ -3,6 +3,9 @@ trait Position {}
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Vec3d<V>(pub V, pub V, pub V);
 
+mod hermite;
+use hermite::{h_5, h_5p, h_5pp};
+
 impl<V> std::ops::Neg for Vec3d<V>
 where
 	V: std::convert::From<V>,
@@ -47,39 +50,6 @@ where
 	}
 }
 
-fn h_5(t: f64, n: usize) -> f64 {
-	let t2 = t.powi(2);
-	let t3 = t.powi(3);
-	let t4 = t.powi(4);
-	let t5 = t.powi(5);
-
-	match n {
-		0 => 1. - 10. * t3 + 15. * t4 - 6. * t5,
-		1 => t - 6. * t3 + 8. * t4 - 3. * t5,
-		2 => 0.5 * t2 - 1.5 * t3 + 1.5 * t4 - 0.5 * t5,
-		3 => 0.5 * t3 - t4 + 0.5 * t5,
-		4 => -4. * t3 + 7. * t4 - 3. * t5,
-		5 => 10. * t3 - 15. * t4 + 6. * t5,
-		_ => unimplemented!(),
-	}
-}
-
-fn h_5p(t: f64, n: usize) -> f64 {
-	let t2 = t.powi(2);
-	let t3 = t.powi(3);
-	let t4 = t.powi(4);
-
-	match n {
-		0 => -30. * t2 + 60. * t3 - 30. * t4,
-		1 => 1. - 18. * t2 + 32. * t3 - 15. * t4,
-		2 => t - 4.5 * t2 + 6. * t3 - 2.5 * t4,
-		3 => 1.5 * t2 - 4. * t3 + 2.5 * t4,
-		4 => -12. * t2 + 28. * t3 - 15. * t4,
-		5 => 30. * t2 - 60. * t3 + 30. * t4,
-		_ => unimplemented!(),
-	}
-}
-
 #[derive(Debug, PartialEq)]
 pub struct Pose<V> {
 	pub position: V,
@@ -94,6 +64,7 @@ pub trait Trajectory<V> {
 	fn get_segment(&self, t: f64) -> Option<Segment<V>>;
 	fn position_at(&self, t: f64) -> Option<V>;
 	fn velocity_at(&self, t: f64) -> Option<V>;
+	fn acceleration_at(&self, t: f64) -> Option<V>;
 }
 
 impl<V> Trajectory<V> for std::vec::Vec<Pose<V>>
@@ -173,6 +144,38 @@ where
 
 			return Some(
 				(*p0 * h05p) + (*v0 * h15p) + (*a0 * h25p) + (*a1 * h35p) + (*v1 * h45p) + (*p1 * h55p),
+			);
+		}
+
+		None
+	}
+
+	fn acceleration_at(&self, t: f64) -> Option<V> {
+		let anchors = self.get_segment(t);
+
+		if let Some(Segment(t, prec, succ)) = anchors {
+			let p0 = &prec.position;
+			let v0 = &prec.velocity;
+			let a0 = &prec.acceleration;
+
+			let p1 = &succ.position;
+			let v1 = &succ.velocity;
+			let a1 = &succ.acceleration;
+
+			let h05pp = h_5pp(t, 0);
+			let h15pp = h_5pp(t, 1);
+			let h25pp = h_5pp(t, 2);
+			let h35pp = h_5pp(t, 3);
+			let h45pp = h_5pp(t, 4);
+			let h55pp = h_5pp(t, 5);
+
+			return Some(
+				(*p0 * h05pp)
+					+ (*v0 * h15pp)
+					+ (*a0 * h25pp)
+					+ (*a1 * h35pp)
+					+ (*v1 * h45pp)
+					+ (*p1 * h55pp),
 			);
 		}
 

@@ -134,6 +134,13 @@ fn velocity_length_zero() {
 }
 
 #[test]
+fn acceleration_length_zero() {
+	let segment: Vec<Pose<Vec3d<f64>>> = Vec::new();
+
+	assert_eq!(segment.acceleration_at(0.0), None);
+}
+
+#[test]
 fn velocity_correct_straight_line_opp_starts() {
 	let mut segment = Vec::new();
 
@@ -155,37 +162,24 @@ fn velocity_correct_straight_line_opp_starts() {
 }
 
 #[test]
-fn h_5_correctness() {
-	assert_eq!(h_5(0.0, 0), 1.);
-	assert_eq!(h_5(0.0, 1), 0.);
-	assert_eq!(h_5(0.0, 2), 0.);
-	assert_eq!(h_5(0.0, 3), 0.);
-	assert_eq!(h_5(0.0, 4), 0.);
-	assert_eq!(h_5(0.0, 5), 0.);
+fn acceleration_correct_curve() {
+	let mut segment = Vec::new();
 
-	assert_eq!(h_5(1.0, 0), 0.);
-	assert_eq!(h_5(1.0, 1), 0.);
-	assert_eq!(h_5(1.0, 2), 0.);
-	assert_eq!(h_5(1.0, 3), 0.);
-	assert_eq!(h_5(1.0, 4), 0.);
-	assert_eq!(h_5(1.0, 5), 1.);
-}
+	segment.push(Pose {
+		position: Vec3d(0.0f64, 0.0, 0.0),
+		velocity: Vec3d(0.0, 1.0, 0.0),
+		acceleration: Vec3d(1.0, 0.0, 0.0),
+	});
 
-#[test]
-fn h_5p_correctness() {
-	assert_eq!(h_5p(0.0, 0), 0.);
-	assert_eq!(h_5p(0.0, 1), 1.);
-	assert_eq!(h_5p(0.0, 2), 0.);
-	assert_eq!(h_5p(0.0, 3), 0.);
-	assert_eq!(h_5p(0.0, 4), 0.);
-	assert_eq!(h_5p(0.0, 5), 0.);
+	segment.push(Pose {
+		position: Vec3d(1.0f64, 1.0, 0.0),
+		velocity: Vec3d(1.0, 0.0, 0.0),
+		acceleration: Vec3d(0.0, -1.0, 0.0),
+	});
 
-	assert_eq!(h_5p(1.0, 0), 0.);
-	assert_eq!(h_5p(1.0, 1), 0.);
-	assert_eq!(h_5p(1.0, 2), 0.);
-	assert_eq!(h_5p(1.0, 3), 0.);
-	assert_eq!(h_5p(1.0, 4), 1.);
-	assert_eq!(h_5p(1.0, 5), 0.);
+	assert_eq!(segment.acceleration_at(0.0), Some(segment[0].acceleration));
+	assert_eq!(segment.acceleration_at(0.5), Some(Vec3d(1.25, -1.25, 0.0)));
+	assert_eq!(segment.acceleration_at(1.0), Some(segment[1].acceleration));
 }
 
 #[test]
