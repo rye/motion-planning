@@ -1,10 +1,19 @@
+mod hermite;
+use hermite::{h_5, h_5p, h_5pp};
+
 trait Position {}
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Vec3d<V>(pub V, pub V, pub V);
 
-mod hermite;
-use hermite::{h_5, h_5p, h_5pp};
+impl<V> std::fmt::Display for Vec3d<V>
+where
+	V: std::fmt::Display,
+{
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "({},{},{})", self.0, self.1, self.2)
+	}
+}
 
 impl<V> std::ops::Neg for Vec3d<V>
 where
