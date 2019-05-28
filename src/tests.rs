@@ -134,6 +134,13 @@ fn velocity_length_zero() {
 }
 
 #[test]
+fn acceleration_length_zero() {
+	let segment: Vec<Pose<Vec3d<f64>>> = Vec::new();
+
+	assert_eq!(segment.acceleration_at(0.0), None);
+}
+
+#[test]
 fn velocity_correct_straight_line_opp_starts() {
 	let mut segment = Vec::new();
 
@@ -152,6 +159,27 @@ fn velocity_correct_straight_line_opp_starts() {
 	assert_eq!(segment.velocity_at(0.0), Some(segment[0].velocity));
 	assert_eq!(segment.velocity_at(0.5), Some(Vec3d(0.0, 1.4375, 0.0)));
 	assert_eq!(segment.velocity_at(1.0), Some(segment[1].velocity));
+}
+
+#[test]
+fn acceleration_correct_curve() {
+	let mut segment = Vec::new();
+
+	segment.push(Pose {
+		position: Vec3d(0.0f64, 0.0, 0.0),
+		velocity: Vec3d(0.0, 1.0, 0.0),
+		acceleration: Vec3d(1.0, 0.0, 0.0),
+	});
+
+	segment.push(Pose {
+		position: Vec3d(1.0f64, 1.0, 0.0),
+		velocity: Vec3d(1.0, 0.0, 0.0),
+		acceleration: Vec3d(0.0, -1.0, 0.0),
+	});
+
+	assert_eq!(segment.acceleration_at(0.0), Some(segment[0].acceleration));
+	assert_eq!(segment.acceleration_at(0.5), Some(Vec3d(1.25, -1.25, 0.0)));
+	assert_eq!(segment.acceleration_at(1.0), Some(segment[1].acceleration));
 }
 
 #[test]
