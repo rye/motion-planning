@@ -23,7 +23,7 @@ fn main() {
 		let vel = segment.velocity_at(t).unwrap();
 		let acc = segment.acceleration_at(t).unwrap();
 
-		println!("{},{:?},{:?},{:?}", t, pos, vel, acc);
+		println!("{},{},{},{}", t, pos, vel, acc);
 	}
 }
 
