@@ -4,7 +4,7 @@ trait Position {}
 pub struct Vec3d<V>(pub V, pub V, pub V);
 
 mod hermite;
-use hermite::{h_5, h_5p};
+use hermite::{h_5, h_5p, h_5pp};
 
 impl<V> std::ops::Neg for Vec3d<V>
 where
@@ -64,6 +64,7 @@ pub trait Trajectory<V> {
 	fn get_segment(&self, t: f64) -> Option<Segment<V>>;
 	fn position_at(&self, t: f64) -> Option<V>;
 	fn velocity_at(&self, t: f64) -> Option<V>;
+	fn acceleration_at(&self, t: f64) -> Option<V>;
 }
 
 impl<V> Trajectory<V> for std::vec::Vec<Pose<V>>
@@ -143,6 +144,33 @@ where
 
 			return Some(
 				(*p0 * h05p) + (*v0 * h15p) + (*a0 * h25p) + (*a1 * h35p) + (*v1 * h45p) + (*p1 * h55p),
+			);
+		}
+
+		None
+	}
+
+	fn acceleration_at(&self, t: f64) -> Option<V> {
+		let anchors = self.get_segment(t);
+
+		if let Some(Segment(t, prec, succ)) = anchors {
+			let p0 = &prec.position;
+			let v0 = &prec.velocity;
+			let a0 = &prec.acceleration;
+
+			let p1 = &succ.position;
+			let v1 = &succ.velocity;
+			let a1 = &succ.acceleration;
+
+			let h05pp = h_5pp(t, 0);
+			let h15pp = h_5pp(t, 1);
+			let h25pp = h_5pp(t, 2);
+			let h35pp = h_5pp(t, 3);
+			let h45pp = h_5pp(t, 4);
+			let h55pp = h_5pp(t, 5);
+
+			return Some(
+				(*p0 * h05pp) + (*v0 * h15pp) + (*a0 * h25pp) + (*a1 * h35pp) + (*v1 * h45pp) + (*p1 * h55pp),
 			);
 		}
 

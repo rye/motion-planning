@@ -21,8 +21,9 @@ fn main() {
 
 		let pos = segment.position_at(t).unwrap();
 		let vel = segment.velocity_at(t).unwrap();
+		let acc = segment.acceleration_at(t).unwrap();
 
-		println!("{},{:?},{:?}", t, pos, vel);
+		println!("{},{:?},{:?},{:?}", t, pos, vel, acc);
 	}
 }
 
