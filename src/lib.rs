@@ -50,6 +50,17 @@ where
 	}
 }
 
+impl<V> Vec3d<V>
+where
+	V: std::ops::Mul<V, Output = V>,
+	V: std::ops::Add<V, Output = V>,
+	V: Copy,
+{
+	pub fn dot(&self, other: &Vec3d<V>) -> V {
+		(self.0 * other.0) + (self.1 * other.1) + (self.2 * other.2)
+	}
+}
+
 #[derive(Debug, PartialEq)]
 pub struct Pose<V> {
 	pub position: V,

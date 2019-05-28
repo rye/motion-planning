@@ -99,6 +99,14 @@ fn vec_scalar_multiplication_vf32_sf64() {
 }
 
 #[test]
+fn vec_dot() {
+	let a: Vec3d<f64> = Vec3d(1., 2., 3.);
+	let b: Vec3d<f64> = Vec3d(5., 4., 3.);
+
+	assert_eq!(a.dot(&b), 22.0_f64);
+}
+
+#[test]
 fn position_correct_straight_line() {
 	let mut segment = Vec::new();
 
