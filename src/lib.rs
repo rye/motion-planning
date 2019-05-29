@@ -1,4 +1,4 @@
-mod hermite;
+pub mod hermite;
 use hermite::{h_5, h_5p, h_5pp};
 
 trait Position {}
