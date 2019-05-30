@@ -130,7 +130,7 @@ where
 
 			let h05 = h_5(t, 0);
 			let h15 = h_5(t, 1);
-			let h25 = h_5(t, 1);
+			let h25 = h_5(t, 2);
 			let h35 = h_5(t, 3);
 			let h45 = h_5(t, 4);
 			let h55 = h_5(t, 5);
