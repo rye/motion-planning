@@ -56,3 +56,38 @@ and Hermite polynomials were developed by Charles Hermite.
 - [ ] Make `Vec3d`-ish types actually be slices instead of tuples, generalize
   `Mul`/`Neg` types.
 - [ ] Implement Rust API Guidelines
+
+## Maintenance Status
+
+This project is still experimental.  We have not released v1 yet, so it does
+not have a stable public API.  We have also not started releasing tagged
+versions yet, either, so the code should be considered in an "in-development"
+stage.
+
+This project adheres to semantic versioning.  Once a major release occurs, any
+subsequent releases that change the existing public API will result in another
+major release.  New arguments to binaries, new features, or additional features
+will warrant new minor releases.  Any fixes to existing behavior or
+non-source-related changes will warrant new patch releases.  Tests will be a
+canary for this change&mdash;if a change to a test is required, this indicates
+that a new major version will be released, as a test is an encapsulated example
+of what "public behavior" looks like.
+
+We only maintain the most recent `MAJOR.MINOR` version.  (If the latest
+release is `v6.7.3`, bugs will only be considered relevant if they are shown to
+affect the `v6.7.X` series.)  This is because of the relatively small nature of
+this project.
+
+## License
+
+This project is licensed under the MIT License.  (See [LICENSE](LICENSE))
+
+## Contributing
+
+You are welcome to fork this project and make contributions as you see fit.
+See the [contributors' documentation](.github/CONTRIBUTING.md) for more
+information.
+
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in this project by you, shall be licensed under the terms of the
+MIT license.
