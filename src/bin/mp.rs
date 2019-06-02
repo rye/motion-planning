@@ -1,6 +1,7 @@
 extern crate motion_planning;
 
-use motion_planning::{Pose, Trajectory, Vec3d};
+use motion_planning::vec::Vec3d;
+use motion_planning::{Pose, Trajectory};
 
 fn main() {
 	let segment: Vec<Pose<Vec3d<f64>>> = vec![
