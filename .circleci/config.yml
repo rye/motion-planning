@@ -23,7 +23,7 @@ commands:
 
   fmt:
     steps:
-      - run: rustup component add rustfmt-preview
+      - run: rustup component add rustfmt
       - run: cargo fmt --verbose --all -- --check
 
   uncache-tarpaulin:
