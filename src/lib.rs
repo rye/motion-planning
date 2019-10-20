@@ -25,7 +25,7 @@ pub trait Trajectory<V> {
 
 impl<V> Trajectory<V> for Vec<Pose<V>>
 where
-	V: Add<V, Output = V> +Copy + Mul<f64, Output = V>,
+	V: Add<V, Output = V> + Copy + Mul<f64, Output = V>,
 {
 	fn get_segment(&self, t: f64) -> Option<Segment<V>> {
 		let length = self.len();
