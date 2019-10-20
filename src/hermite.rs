@@ -64,12 +64,12 @@ pub fn h_5(t: f64, n: usize) -> f64 {
 	let t5 = t.powi(5);
 
 	match n {
-		0 => 1. - 10. * t3 + 15. * t4 - 6. * t5,
-		1 => t - 6. * t3 + 8. * t4 - 3. * t5,
-		2 => 0.5 * t2 - 1.5 * t3 + 1.5 * t4 - 0.5 * t5,
-		3 => 0.5 * t3 - t4 + 0.5 * t5,
-		4 => -4. * t3 + 7. * t4 - 3. * t5,
-		5 => 10. * t3 - 15. * t4 + 6. * t5,
+		0 => (-10.0_f64).mul_add(t3, 15.0_f64.mul_add(t4, (-6.0_f64).mul_add(t5, 1.))),
+		1 => (-6.0_f64).mul_add(t3, 8.0_f64.mul_add(t4, (-3.0_f64).mul_add(t5, t))),
+		2 => 0.5_f64.mul_add(t2, (-1.5_f64).mul_add(t3, 1.5_f64.mul_add(t4, -0.5_f64 * t5))),
+		3 => 0.5_f64.mul_add(t3, 0.5_f64.mul_add(t5, -t4)),
+		4 => (-4.0_f64).mul_add(t3, 7.0_f64.mul_add(t4, -3.0_f64 * t5)),
+		5 => 10.0_f64.mul_add(t3, (-15.0_f64).mul_add(t4, 6.0_f64 * t5)),
 		_ => unimplemented!(),
 	}
 }
