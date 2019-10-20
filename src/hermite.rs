@@ -66,7 +66,10 @@ pub fn h_5(t: f64, n: usize) -> f64 {
 	match n {
 		0 => (-10.0_f64).mul_add(t3, 15.0_f64.mul_add(t4, (-6.0_f64).mul_add(t5, 1.))),
 		1 => (-6.0_f64).mul_add(t3, 8.0_f64.mul_add(t4, (-3.0_f64).mul_add(t5, t))),
-		2 => 0.5_f64.mul_add(t2, (-1.5_f64).mul_add(t3, 1.5_f64.mul_add(t4, -0.5_f64 * t5))),
+		2 => 0.5_f64.mul_add(
+			t2,
+			(-1.5_f64).mul_add(t3, 1.5_f64.mul_add(t4, -0.5_f64 * t5)),
+		),
 		3 => 0.5_f64.mul_add(t3, 0.5_f64.mul_add(t5, -t4)),
 		4 => (-4.0_f64).mul_add(t3, 7.0_f64.mul_add(t4, -3.0_f64 * t5)),
 		5 => 10.0_f64.mul_add(t3, (-15.0_f64).mul_add(t4, 6.0_f64 * t5)),
