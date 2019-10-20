@@ -1,19 +1,22 @@
+use core::ops::{Add, Mul, Neg};
+use core::{convert::From, fmt};
+
+#[allow(clippy::module_name_repetitions)]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Vec3d<V>(pub V, pub V, pub V);
 
-impl<V> std::fmt::Display for Vec3d<V>
+impl<V> fmt::Display for Vec3d<V>
 where
-	V: std::fmt::Display,
+	V: fmt::Display,
 {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
 		write!(f, "({},{},{})", self.0, self.1, self.2)
 	}
 }
 
-impl<V> std::ops::Neg for Vec3d<V>
+impl<V> Neg for Vec3d<V>
 where
-	V: std::convert::From<V>,
-	V: std::ops::Neg<Output = V>,
+	V: From<V> + Neg<Output = V>,
 {
 	type Output = Self;
 
@@ -22,11 +25,9 @@ where
 	}
 }
 
-impl<T, V> std::ops::Mul<T> for Vec3d<V>
+impl<T, V> Mul<T> for Vec3d<V>
 where
-	T: std::ops::Mul<T, Output = T>,
-	T: std::convert::From<V>,
-	T: Copy,
+	T: Copy + From<V> + Mul<T, Output = T>,
 {
 	type Output = Vec3d<T>;
 
@@ -39,9 +40,9 @@ where
 	}
 }
 
-impl<T: std::ops::Add<T>> std::ops::Add<Vec3d<T>> for Vec3d<T>
+impl<T: Add<T>> Add<Vec3d<T>> for Vec3d<T>
 where
-	T: std::convert::From<<T as std::ops::Add>::Output>,
+	T: From<<T as Add>::Output>,
 {
 	type Output = Self;
 
@@ -56,9 +57,7 @@ where
 
 impl<V> Vec3d<V>
 where
-	V: std::ops::Mul<V, Output = V>,
-	V: std::ops::Add<V, Output = V>,
-	V: Copy,
+	V: Add<V, Output = V> + Copy + Mul<V, Output = V>,
 {
 	pub fn dot(&self, other: &Vec3d<V>) -> V {
 		(self.0 * other.0) + (self.1 * other.1) + (self.2 * other.2)

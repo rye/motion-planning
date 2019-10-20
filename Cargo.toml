@@ -6,5 +6,5 @@ edition = "2018"
 license = "MIT"
 repository = "https://github.com/rye/motion-planning"
 readme = "README.md"
-keywords = ["quintic", "septic", "heptic", "hermite", "spline", "motion", "planning"]
+keywords = ["quintic", "hermite", "spline", "motion", "planning"]
 categories = ["science::robotics"]
