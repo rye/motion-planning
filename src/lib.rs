@@ -1,3 +1,6 @@
+use core::ops::{Add, Mul};
+use std::vec::Vec;
+
 pub mod hermite;
 use hermite::{h_5, h_5p, h_5pp};
 
@@ -20,11 +23,9 @@ pub trait Trajectory<V> {
 	fn acceleration_at(&self, t: f64) -> Option<V>;
 }
 
-impl<V> Trajectory<V> for std::vec::Vec<Pose<V>>
+impl<V> Trajectory<V> for Vec<Pose<V>>
 where
-	V: Copy,
-	V: std::ops::Mul<f64, Output = V>,
-	V: std::ops::Add<V, Output = V>,
+	V: Add<V, Output = V> + Copy + Mul<f64, Output = V>,
 {
 	fn get_segment(&self, t: f64) -> Option<Segment<V>> {
 		let length = self.len();
