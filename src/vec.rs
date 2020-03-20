@@ -32,7 +32,7 @@ where
 	type Output = Vec3d<T>;
 
 	fn mul(self, scalar: T) -> Vec3d<T> {
-		Self(
+		Vec3d(
 			scalar * self.0.into(),
 			scalar * self.1.into(),
 			scalar * self.2.into(),
