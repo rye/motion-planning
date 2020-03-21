@@ -20,8 +20,8 @@ where
 {
 	type Output = Self;
 
-	fn neg(self) -> Self {
-		Self(-self.0, -self.1, -self.2)
+	fn neg(self) -> Self::Output {
+		Vec3d(-self.0, -self.1, -self.2)
 	}
 }
 
@@ -31,7 +31,7 @@ where
 {
 	type Output = Vec3d<T>;
 
-	fn mul(self, scalar: T) -> Vec3d<T> {
+	fn mul(self, scalar: T) -> Self::Output {
 		Vec3d(
 			scalar * self.0.into(),
 			scalar * self.1.into(),
@@ -46,8 +46,8 @@ where
 {
 	type Output = Self;
 
-	fn add(self, other: Self) -> Self {
-		Self(
+	fn add(self, other: Self) -> Self::Output {
+		Vec3d(
 			(self.0 + other.0).into(),
 			(self.1 + other.1).into(),
 			(self.2 + other.2).into(),
