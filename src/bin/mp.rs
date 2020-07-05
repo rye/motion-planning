@@ -25,8 +25,3 @@ fn main() {
 		println!("{},{},{},{}", t, pos, vel, acc);
 	}
 }
-
-#[test]
-fn main_runs() {
-	assert_eq!(main(), ());
-}
