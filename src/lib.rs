@@ -139,3 +139,11 @@ where
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+#[macro_export]
+macro_rules! assert_f64_roughly_eq {
+	($left:expr, $right:expr) => {
+		assert!(($right - $left).abs() < f64::EPSILON)
+	};
+}

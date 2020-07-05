@@ -1,3 +1,6 @@
+#[cfg(test)]
+use super::assert_f64_roughly_eq;
+
 /// Computes the value of a quintic Hermite basis function.
 ///
 /// The coefficients are results from the following Mathematica code.  In
@@ -178,13 +181,6 @@ pub fn h_5pp(t: f64, n: usize) -> f64 {
 		5 => t3.mul_add(120., t2.mul_add(-180., t * 60.)),
 		_ => unimplemented!(),
 	}
-}
-
-#[cfg(test)]
-macro_rules! assert_f64_roughly_eq {
-	($left:expr, $right:expr) => {
-		assert!(($right - $left).abs() < f64::EPSILON)
-	};
 }
 
 #[test]
