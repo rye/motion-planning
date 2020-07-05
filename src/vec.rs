@@ -1,6 +1,9 @@
 use core::ops::{Add, Mul, Neg};
 use core::{convert::From, fmt};
 
+#[cfg(test)]
+use super::assert_f64_roughly_eq;
+
 #[allow(clippy::module_name_repetitions)]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Vec3d<V>(pub V, pub V, pub V);
@@ -115,5 +118,5 @@ fn vec_dot() {
 	let a: Vec3d<f64> = Vec3d(1., 2., 3.);
 	let b: Vec3d<f64> = Vec3d(5., 4., 3.);
 
-	assert_eq!(a.dot(&b), 22.0_f64);
+	assert_f64_roughly_eq!(a.dot(&b), 22.0_f64);
 }
