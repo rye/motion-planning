@@ -1,5 +1,5 @@
 [package]
-name = "motion-planning"
+name = "motion-planning-cli"
 version = "0.1.0-alpha.0"
 authors = ["Kristofer Rye <kristofer.rye@gmail.com>"]
 edition = "2018"
@@ -12,7 +12,5 @@ categories = ["science::robotics"]
 [badges]
 maintenance = { status = "experimental" }
 
-[workspace]
-members = [
-	"motion-planning-cli"
-]
+[dependencies]
+motion-planning = { path = "../" }
