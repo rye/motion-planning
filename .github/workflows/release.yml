@@ -36,7 +36,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Attempt to publish crate
+    - name: Publish `motion-planning`
+      uses: actions-rs/cargo@v1
+      with:
+        command: publish
+      env:
+        CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+    - name: Publish `motion-planning-cli`
+      working-directory: ./cli
       uses: actions-rs/cargo@v1
       with:
         command: publish

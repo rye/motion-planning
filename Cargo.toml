@@ -14,5 +14,5 @@ maintenance = { status = "experimental" }
 
 [workspace]
 members = [
-	"motion-planning-cli"
+	"cli"
 ]
