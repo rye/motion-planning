@@ -42,6 +42,8 @@ jobs:
         command: publish --manifest-path ./Cargo.toml
       env:
         CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+    - name: Wait for 30 seconds
+      run: sleep 30s
     - name: Publish `motion-planning-cli`
       uses: actions-rs/cargo@v1
       with:
