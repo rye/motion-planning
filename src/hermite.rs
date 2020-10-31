@@ -183,6 +183,57 @@ pub fn h_5pp(t: f64, n: usize) -> f64 {
 	}
 }
 
+pub fn h_3(t: f64, n: usize) -> f64 {
+	let t2 = t.powi(2);
+	let t3 = t.powi(3);
+
+	match n {
+		0 => t3.mul_add(2., t2.mul_add(-3., 1.)),
+		1 => t3.mul_add(1., t2.mul_add(-2., t)),
+		2 => t3.mul_add(1., t2.mul_add(-1., 0.)),
+		3 => t3.mul_add(-2., t2.mul_add(3., 0.)),
+		_ => unimplemented!(),
+	}
+}
+
+pub fn h_3p(t: f64, n: usize) -> f64 {
+	let t2 = t.powi(2);
+
+	match n {
+		0 => t2.mul_add(6., t.mul_add(-6., 0.)),
+		1 => t2.mul_add(3., t.mul_add(-4., 1.)),
+		2 => t2.mul_add(3., t.mul_add(-2., 0.)),
+		3 => t2.mul_add(-6., t.mul_add(6., 0.)),
+		_ => unimplemented!(),
+	}
+}
+
+#[test]
+fn h_3_is_correct() {
+	assert_f64_roughly_eq!(h_3(0.0, 0), 1.);
+	assert_f64_roughly_eq!(h_3(0.0, 1), 0.);
+	assert_f64_roughly_eq!(h_3(0.0, 2), 0.);
+	assert_f64_roughly_eq!(h_3(0.0, 3), 0.);
+
+	assert_f64_roughly_eq!(h_3(1.0, 0), 0.);
+	assert_f64_roughly_eq!(h_3(1.0, 1), 0.);
+	assert_f64_roughly_eq!(h_3(1.0, 2), 0.);
+	assert_f64_roughly_eq!(h_3(1.0, 3), 1.);
+}
+
+#[test]
+fn h_3p_is_correct() {
+	assert_f64_roughly_eq!(h_3p(0.0, 0), 0.);
+	assert_f64_roughly_eq!(h_3p(0.0, 1), 1.);
+	assert_f64_roughly_eq!(h_3p(0.0, 2), 0.);
+	assert_f64_roughly_eq!(h_3p(0.0, 3), 0.);
+
+	assert_f64_roughly_eq!(h_3p(1.0, 0), 0.);
+	assert_f64_roughly_eq!(h_3p(1.0, 1), 0.);
+	assert_f64_roughly_eq!(h_3p(1.0, 2), 1.);
+	assert_f64_roughly_eq!(h_3p(1.0, 3), 0.);
+}
+
 #[test]
 fn h_5_is_correct() {
 	assert_f64_roughly_eq!(h_5(0.0, 0), 1.);
