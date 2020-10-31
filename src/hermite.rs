@@ -6,3 +6,6 @@ pub use cubic::*;
 
 mod quintic;
 pub use quintic::*;
+
+mod septic;
+pub use septic::*;
