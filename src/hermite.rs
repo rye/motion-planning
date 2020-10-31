@@ -186,7 +186,6 @@ pub fn h_5pp(t: f64, n: usize) -> f64 {
 #[test]
 fn h_5_is_correct() {
 	assert_f64_roughly_eq!(h_5(0.0, 0), 1.);
-	assert_f64_roughly_eq!(h_5(0.0, 0), 1.);
 	assert_f64_roughly_eq!(h_5(0.0, 1), 0.);
 	assert_f64_roughly_eq!(h_5(0.0, 2), 0.);
 	assert_f64_roughly_eq!(h_5(0.0, 3), 0.);
