@@ -2,32 +2,37 @@ use core::ops::{Add, Mul};
 use std::vec::Vec;
 
 pub mod hermite;
-use hermite::{h_5, h_5p, h_5pp};
+use hermite::{h_3, h_3p, h_5, h_5p, h_5pp};
 
 pub mod vec;
 
 #[derive(Debug, PartialEq)]
-pub struct Pose<V> {
+pub struct Pose3<V> {
 	pub position: V,
 	pub velocity: V,
 	pub acceleration: V,
 }
 
 #[derive(Debug, PartialEq)]
-pub struct Segment<'a, V>(f64, &'a Pose<V>, &'a Pose<V>);
-
-pub trait Trajectory<V> {
-	fn get_segment(&self, t: f64) -> Option<Segment<V>>;
-	fn position_at(&self, t: f64) -> Option<V>;
-	fn velocity_at(&self, t: f64) -> Option<V>;
-	fn acceleration_at(&self, t: f64) -> Option<V>;
+pub struct Pose2<V> {
+	pub position: V,
+	pub velocity: V,
 }
 
-impl<V> Trajectory<V> for Vec<Pose<V>>
+#[derive(Debug, PartialEq)]
+pub struct Segment2<'a, V>(f64, &'a Pose2<V>, &'a Pose2<V>);
+
+pub trait Trajectory2<V> {
+	fn get_segment(&self, t: f64) -> Option<Segment2<V>>;
+	fn position_at(&self, t: f64) -> Option<V>;
+	fn velocity_at(&self, t: f64) -> Option<V>;
+}
+
+impl<V> Trajectory2<V> for Vec<Pose2<V>>
 where
 	V: Add<V, Output = V> + Copy + Mul<f64, Output = V>,
 {
-	fn get_segment(&self, t: f64) -> Option<Segment<V>> {
+	fn get_segment(&self, t: f64) -> Option<Segment2<V>> {
 		let length = self.len();
 
 		// If our container (Vec) has length 0, we cannot find a segment!.
@@ -40,20 +45,100 @@ where
 		let prec_idx = t.floor() as usize;
 		let succ_idx = t.ceil() as usize;
 
-		let prec: &Pose<V> = &self[prec_idx];
-		let succ: &Pose<V> = &self[succ_idx];
+		let prec: &Pose2<V> = &self[prec_idx];
+		let succ: &Pose2<V> = &self[succ_idx];
 
 		let t = t.fract();
 
 		assert!(0.0_f64 <= t && t <= 1.0_f64, "{} not in [0., 1.]", t);
 
-		Some(Segment(t, prec, succ))
+		Some(Segment2(t, prec, succ))
 	}
 
 	fn position_at(&self, t: f64) -> Option<V> {
 		let anchors = self.get_segment(t);
 
-		if let Some(Segment(t, prec, succ)) = anchors {
+		if let Some(Segment2(t, prec, succ)) = anchors {
+			let p0 = &prec.position;
+			let v0 = &prec.velocity;
+
+			let p1 = &succ.position;
+			let v1 = &succ.velocity;
+
+			let h03 = h_3(t, 0);
+			let h13 = h_3(t, 1);
+			let h23 = h_3(t, 2);
+			let h33 = h_3(t, 3);
+
+			return Some((*p0 * h03) + (*v0 * h13) + (*v1 * h23) + (*p1 * h33));
+		}
+
+		None
+	}
+
+	fn velocity_at(&self, t: f64) -> Option<V> {
+		let anchors = self.get_segment(t);
+
+		if let Some(Segment2(t, prec, succ)) = anchors {
+			let p0 = &prec.position;
+			let v0 = &prec.velocity;
+
+			let p1 = &succ.position;
+			let v1 = &succ.velocity;
+
+			let h03p = h_3p(t, 0);
+			let h13p = h_3p(t, 1);
+			let h23p = h_3p(t, 2);
+			let h33p = h_3p(t, 3);
+
+			return Some((*p0 * h03p) + (*v0 * h13p) + (*v1 * h23p) + (*p1 * h33p));
+		}
+
+		None
+	}
+}
+
+#[derive(Debug, PartialEq)]
+pub struct Segment3<'a, V>(f64, &'a Pose3<V>, &'a Pose3<V>);
+
+pub trait Trajectory3<V> {
+	fn get_segment(&self, t: f64) -> Option<Segment3<V>>;
+	fn position_at(&self, t: f64) -> Option<V>;
+	fn velocity_at(&self, t: f64) -> Option<V>;
+	fn acceleration_at(&self, t: f64) -> Option<V>;
+}
+
+impl<V> Trajectory3<V> for Vec<Pose3<V>>
+where
+	V: Add<V, Output = V> + Copy + Mul<f64, Output = V>,
+{
+	fn get_segment(&self, t: f64) -> Option<Segment3<V>> {
+		let length = self.len();
+
+		// If our container (Vec) has length 0, we cannot find a segment!.
+		if let 0 = length {
+			return None;
+		}
+
+		// `t` ranges from `0.` to `length * 1.`;
+
+		let prec_idx = t.floor() as usize;
+		let succ_idx = t.ceil() as usize;
+
+		let prec: &Pose3<V> = &self[prec_idx];
+		let succ: &Pose3<V> = &self[succ_idx];
+
+		let t = t.fract();
+
+		assert!(0.0_f64 <= t && t <= 1.0_f64, "{} not in [0., 1.]", t);
+
+		Some(Segment3(t, prec, succ))
+	}
+
+	fn position_at(&self, t: f64) -> Option<V> {
+		let anchors = self.get_segment(t);
+
+		if let Some(Segment3(t, prec, succ)) = anchors {
 			let p0 = &prec.position;
 			let v0 = &prec.velocity;
 			let a0 = &prec.acceleration;
@@ -80,7 +165,7 @@ where
 	fn velocity_at(&self, t: f64) -> Option<V> {
 		let anchors = self.get_segment(t);
 
-		if let Some(Segment(t, prec, succ)) = anchors {
+		if let Some(Segment3(t, prec, succ)) = anchors {
 			let p0 = &prec.position;
 			let v0 = &prec.velocity;
 			let a0 = &prec.acceleration;
@@ -107,7 +192,7 @@ where
 	fn acceleration_at(&self, t: f64) -> Option<V> {
 		let anchors = self.get_segment(t);
 
-		if let Some(Segment(t, prec, succ)) = anchors {
+		if let Some(Segment3(t, prec, succ)) = anchors {
 			let p0 = &prec.position;
 			let v0 = &prec.velocity;
 			let a0 = &prec.acceleration;

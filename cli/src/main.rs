@@ -1,14 +1,14 @@
 use motion_planning::vec::Vec3d;
-use motion_planning::{Pose, Trajectory};
+use motion_planning::{Pose3, Trajectory3};
 
 fn main() {
-	let segment: Vec<Pose<Vec3d<f64>>> = vec![
-		Pose {
+	let segment: Vec<Pose3<Vec3d<f64>>> = vec![
+		Pose3 {
 			position: Vec3d(0.0, 0.0, 0.0),
 			velocity: Vec3d(0.0, 0.0, 0.0),
 			acceleration: Vec3d(0.0, 0.0, 0.0),
 		},
-		Pose {
+		Pose3 {
 			position: Vec3d(0.0, 1.0, 0.0),
 			velocity: Vec3d(0.0, 0.0, 0.0),
 			acceleration: Vec3d(0.0, 0.0, 0.0),
