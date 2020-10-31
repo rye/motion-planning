@@ -1,5 +1,4 @@
-#[cfg(test)]
-use super::assert_f64_roughly_eq;
+//! The Septic Hermite basis functions.
 
 pub fn h_7(t: f64, n: usize) -> f64 {
 	let t2 = t.powi(2);
@@ -147,6 +146,9 @@ pub fn h_7ppp(t: f64, n: usize) -> f64 {
 		_ => unimplemented!(),
 	}
 }
+
+#[cfg(test)]
+use super::assert_f64_roughly_eq;
 
 #[cfg(test)]
 mod tests {

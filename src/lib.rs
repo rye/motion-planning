@@ -2,7 +2,10 @@ use core::ops::{Add, Mul};
 use std::vec::Vec;
 
 pub mod hermite;
-use hermite::{h_3, h_3p, h_5, h_5p, h_5pp};
+use hermite::{
+	cubic::{h_3, h_3p},
+	quintic::{h_5, h_5p, h_5pp},
+};
 
 pub mod vec;
 

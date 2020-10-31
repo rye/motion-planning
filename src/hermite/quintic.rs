@@ -1,5 +1,4 @@
-#[cfg(test)]
-use super::assert_f64_roughly_eq;
+//! The quintic Hermite basis functions.
 
 /// Computes the value of a quintic Hermite basis function.
 ///
@@ -32,7 +31,7 @@ use super::assert_f64_roughly_eq;
 /// # Examples
 ///
 /// ```rust
-/// use motion_planning::hermite::h_5;
+/// use motion_planning::hermite::quintic::h_5;
 ///
 /// // at t=0, all of h_n^5 are `0` except for `h_0^5`.
 /// assert_eq!(h_5(0., 0), 1.);
@@ -56,7 +55,7 @@ use super::assert_f64_roughly_eq;
 /// If `n` is not one of `0`, `1`, `2`, `3`, `4`, or `5`, this function panics.
 ///
 /// ```should_panic
-/// use motion_planning::hermite::h_5;
+/// use motion_planning::hermite::quintic::h_5;
 /// # let t = 0.5_f64;
 /// h_5(t, 7);
 /// ```
@@ -86,7 +85,7 @@ pub fn h_5(t: f64, n: usize) -> f64 {
 /// # Examples
 ///
 /// ```rust
-/// use motion_planning::hermite::h_5p;
+/// use motion_planning::hermite::quintic::h_5p;
 ///
 /// // at t=0, all of h_n^5' are `0` except for `h_1^5'`.
 /// assert_eq!(h_5p(0., 0), 0.);
@@ -110,7 +109,7 @@ pub fn h_5(t: f64, n: usize) -> f64 {
 /// If `n` is not one of `0`, `1`, `2`, `3`, `4`, or `5`, this function panics.
 ///
 /// ```should_panic
-/// use motion_planning::hermite::h_5p;
+/// use motion_planning::hermite::quintic::h_5p;
 /// # let t = 0.5_f64;
 /// h_5p(t, 7);
 /// ```
@@ -140,7 +139,7 @@ pub fn h_5p(t: f64, n: usize) -> f64 {
 /// # Examples
 ///
 /// ```rust
-/// use motion_planning::hermite::h_5pp;
+/// use motion_planning::hermite::quintic::h_5pp;
 ///
 /// // at t=0, all of h_n^5'' are `0` except for `h_2^5''`.
 /// assert_eq!(h_5pp(0., 0), 0.);
@@ -164,7 +163,7 @@ pub fn h_5p(t: f64, n: usize) -> f64 {
 /// If `n` is not one of `0`, `1`, `2`, `3`, `4`, or `5`, this function panics.
 ///
 /// ```should_panic
-/// use motion_planning::hermite::h_5pp;
+/// use motion_planning::hermite::quintic::h_5pp;
 /// # let t = 0.5_f64;
 /// h_5pp(t, 7);
 /// ```
@@ -182,6 +181,9 @@ pub fn h_5pp(t: f64, n: usize) -> f64 {
 		_ => unimplemented!(),
 	}
 }
+
+#[cfg(test)]
+use super::assert_f64_roughly_eq;
 
 #[cfg(test)]
 mod tests {
