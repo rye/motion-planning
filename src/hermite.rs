@@ -294,79 +294,122 @@ pub fn h_3p(t: f64, n: usize) -> f64 {
 	}
 }
 
-#[test]
-fn h_3_is_correct() {
-	assert_f64_roughly_eq!(h_3(0.0, 0), 1.);
-	assert_f64_roughly_eq!(h_3(0.0, 1), 0.);
-	assert_f64_roughly_eq!(h_3(0.0, 2), 0.);
-	assert_f64_roughly_eq!(h_3(0.0, 3), 0.);
+#[cfg(test)]
+mod tests {
+	#[cfg(test)]
+	mod h_3 {
+		use super::super::{assert_f64_roughly_eq, h_3};
 
-	assert_f64_roughly_eq!(h_3(1.0, 0), 0.);
-	assert_f64_roughly_eq!(h_3(1.0, 1), 0.);
-	assert_f64_roughly_eq!(h_3(1.0, 2), 0.);
-	assert_f64_roughly_eq!(h_3(1.0, 3), 1.);
-}
+		#[test]
+		fn correct_at_0() {
+			assert_f64_roughly_eq!(h_3(0.0, 0), 1.);
+			assert_f64_roughly_eq!(h_3(0.0, 1), 0.);
+			assert_f64_roughly_eq!(h_3(0.0, 2), 0.);
+			assert_f64_roughly_eq!(h_3(0.0, 3), 0.);
+		}
 
-#[test]
-fn h_3p_is_correct() {
-	assert_f64_roughly_eq!(h_3p(0.0, 0), 0.);
-	assert_f64_roughly_eq!(h_3p(0.0, 1), 1.);
-	assert_f64_roughly_eq!(h_3p(0.0, 2), 0.);
-	assert_f64_roughly_eq!(h_3p(0.0, 3), 0.);
+		#[test]
+		fn correct_at_1() {
+			assert_f64_roughly_eq!(h_3(1.0, 0), 0.);
+			assert_f64_roughly_eq!(h_3(1.0, 1), 0.);
+			assert_f64_roughly_eq!(h_3(1.0, 2), 0.);
+			assert_f64_roughly_eq!(h_3(1.0, 3), 1.);
+		}
+	}
 
-	assert_f64_roughly_eq!(h_3p(1.0, 0), 0.);
-	assert_f64_roughly_eq!(h_3p(1.0, 1), 0.);
-	assert_f64_roughly_eq!(h_3p(1.0, 2), 1.);
-	assert_f64_roughly_eq!(h_3p(1.0, 3), 0.);
-}
+	#[cfg(test)]
+	mod h_3p {
+		use super::super::{assert_f64_roughly_eq, h_3p};
 
-#[test]
-fn h_5_is_correct() {
-	assert_f64_roughly_eq!(h_5(0.0, 0), 1.);
-	assert_f64_roughly_eq!(h_5(0.0, 1), 0.);
-	assert_f64_roughly_eq!(h_5(0.0, 2), 0.);
-	assert_f64_roughly_eq!(h_5(0.0, 3), 0.);
-	assert_f64_roughly_eq!(h_5(0.0, 4), 0.);
-	assert_f64_roughly_eq!(h_5(0.0, 5), 0.);
+		#[test]
+		fn correct_at_0() {
+			assert_f64_roughly_eq!(h_3p(0.0, 0), 0.);
+			assert_f64_roughly_eq!(h_3p(0.0, 1), 1.);
+			assert_f64_roughly_eq!(h_3p(0.0, 2), 0.);
+			assert_f64_roughly_eq!(h_3p(0.0, 3), 0.);
+		}
 
-	assert_f64_roughly_eq!(h_5(1.0, 0), 0.);
-	assert_f64_roughly_eq!(h_5(1.0, 1), 0.);
-	assert_f64_roughly_eq!(h_5(1.0, 2), 0.);
-	assert_f64_roughly_eq!(h_5(1.0, 3), 0.);
-	assert_f64_roughly_eq!(h_5(1.0, 4), 0.);
-	assert_f64_roughly_eq!(h_5(1.0, 5), 1.);
-}
+		#[test]
+		fn correct_at_1() {
+			assert_f64_roughly_eq!(h_3p(1.0, 0), 0.);
+			assert_f64_roughly_eq!(h_3p(1.0, 1), 0.);
+			assert_f64_roughly_eq!(h_3p(1.0, 2), 1.);
+			assert_f64_roughly_eq!(h_3p(1.0, 3), 0.);
+		}
+	}
 
-#[test]
-fn h_5p_is_correct() {
-	assert_f64_roughly_eq!(h_5p(0.0, 0), 0.);
-	assert_f64_roughly_eq!(h_5p(0.0, 1), 1.);
-	assert_f64_roughly_eq!(h_5p(0.0, 2), 0.);
-	assert_f64_roughly_eq!(h_5p(0.0, 3), 0.);
-	assert_f64_roughly_eq!(h_5p(0.0, 4), 0.);
-	assert_f64_roughly_eq!(h_5p(0.0, 5), 0.);
+	#[cfg(test)]
+	mod h_5 {
+		use super::super::{assert_f64_roughly_eq, h_5};
 
-	assert_f64_roughly_eq!(h_5p(1.0, 0), 0.);
-	assert_f64_roughly_eq!(h_5p(1.0, 1), 0.);
-	assert_f64_roughly_eq!(h_5p(1.0, 2), 0.);
-	assert_f64_roughly_eq!(h_5p(1.0, 3), 0.);
-	assert_f64_roughly_eq!(h_5p(1.0, 4), 1.);
-	assert_f64_roughly_eq!(h_5p(1.0, 5), 0.);
-}
+		#[test]
+		fn correct_at_0() {
+			assert_f64_roughly_eq!(h_5(0.0, 0), 1.);
+			assert_f64_roughly_eq!(h_5(0.0, 1), 0.);
+			assert_f64_roughly_eq!(h_5(0.0, 2), 0.);
+			assert_f64_roughly_eq!(h_5(0.0, 3), 0.);
+			assert_f64_roughly_eq!(h_5(0.0, 4), 0.);
+			assert_f64_roughly_eq!(h_5(0.0, 5), 0.);
+		}
 
-#[test]
-fn h_5pp_is_correct() {
-	assert_f64_roughly_eq!(h_5pp(0.0, 0), 0.);
-	assert_f64_roughly_eq!(h_5pp(0.0, 1), 0.);
-	assert_f64_roughly_eq!(h_5pp(0.0, 2), 1.);
-	assert_f64_roughly_eq!(h_5pp(0.0, 3), 0.);
-	assert_f64_roughly_eq!(h_5pp(0.0, 4), 0.);
-	assert_f64_roughly_eq!(h_5pp(0.0, 5), 0.);
+		#[test]
+		fn correct_at_1() {
+			assert_f64_roughly_eq!(h_5(1.0, 0), 0.);
+			assert_f64_roughly_eq!(h_5(1.0, 1), 0.);
+			assert_f64_roughly_eq!(h_5(1.0, 2), 0.);
+			assert_f64_roughly_eq!(h_5(1.0, 3), 0.);
+			assert_f64_roughly_eq!(h_5(1.0, 4), 0.);
+			assert_f64_roughly_eq!(h_5(1.0, 5), 1.);
+		}
+	}
 
-	assert_f64_roughly_eq!(h_5pp(1.0, 0), 0.);
-	assert_f64_roughly_eq!(h_5pp(1.0, 1), 0.);
-	assert_f64_roughly_eq!(h_5pp(1.0, 2), 0.);
-	assert_f64_roughly_eq!(h_5pp(1.0, 3), 1.);
-	assert_f64_roughly_eq!(h_5pp(1.0, 4), 0.);
-	assert_f64_roughly_eq!(h_5pp(1.0, 5), 0.);
+	#[cfg(test)]
+	mod h_5p {
+		use super::super::{assert_f64_roughly_eq, h_5p};
+
+		#[test]
+		fn correct_at_0() {
+			assert_f64_roughly_eq!(h_5p(0.0, 0), 0.);
+			assert_f64_roughly_eq!(h_5p(0.0, 1), 1.);
+			assert_f64_roughly_eq!(h_5p(0.0, 2), 0.);
+			assert_f64_roughly_eq!(h_5p(0.0, 3), 0.);
+			assert_f64_roughly_eq!(h_5p(0.0, 4), 0.);
+			assert_f64_roughly_eq!(h_5p(0.0, 5), 0.);
+		}
+
+		#[test]
+		fn correct_at_1() {
+			assert_f64_roughly_eq!(h_5p(1.0, 0), 0.);
+			assert_f64_roughly_eq!(h_5p(1.0, 1), 0.);
+			assert_f64_roughly_eq!(h_5p(1.0, 2), 0.);
+			assert_f64_roughly_eq!(h_5p(1.0, 3), 0.);
+			assert_f64_roughly_eq!(h_5p(1.0, 4), 1.);
+			assert_f64_roughly_eq!(h_5p(1.0, 5), 0.);
+		}
+	}
+
+	#[cfg(test)]
+	mod h_5pp {
+		use super::super::{assert_f64_roughly_eq, h_5pp};
+
+		#[test]
+		fn correct_at_0() {
+			assert_f64_roughly_eq!(h_5pp(0.0, 0), 0.);
+			assert_f64_roughly_eq!(h_5pp(0.0, 1), 0.);
+			assert_f64_roughly_eq!(h_5pp(0.0, 2), 1.);
+			assert_f64_roughly_eq!(h_5pp(0.0, 3), 0.);
+			assert_f64_roughly_eq!(h_5pp(0.0, 4), 0.);
+			assert_f64_roughly_eq!(h_5pp(0.0, 5), 0.);
+		}
+
+		#[test]
+		fn correct_at_1() {
+			assert_f64_roughly_eq!(h_5pp(1.0, 0), 0.);
+			assert_f64_roughly_eq!(h_5pp(1.0, 1), 0.);
+			assert_f64_roughly_eq!(h_5pp(1.0, 2), 0.);
+			assert_f64_roughly_eq!(h_5pp(1.0, 3), 1.);
+			assert_f64_roughly_eq!(h_5pp(1.0, 4), 0.);
+			assert_f64_roughly_eq!(h_5pp(1.0, 5), 0.);
+		}
+	}
 }
