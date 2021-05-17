@@ -6,21 +6,21 @@ fn get_segment_returns_correct_segment() {
 	let mut segment = Vec::new();
 
 	// Start at origin, moving north at 1.0 u/s
-	segment.push(Pose {
+	segment.push(Pose3 {
 		position: Vec3d(0.0f64, 0.0, 0.0),
 		velocity: Vec3d(0.0, 1.0, 0.0),
 		acceleration: Vec3d(0.0, 0.0, 0.0),
 	});
 
 	// Stop at (0,1,0)
-	segment.push(Pose {
+	segment.push(Pose3 {
 		position: Vec3d(0.0f64, 1.0, 0.0),
 		velocity: Vec3d(0.0, 0.0, 0.0),
 		acceleration: Vec3d(0.0, 0.0, 0.0),
 	});
 
 	// Accelerate through (0,2,0), moving north at 1.0 u/s
-	segment.push(Pose {
+	segment.push(Pose3 {
 		position: Vec3d(0.0f64, 2.0, 0.0),
 		velocity: Vec3d(0.0, 1.0, 0.0),
 		acceleration: Vec3d(0.0, 0.0, 0.0),
@@ -34,7 +34,7 @@ fn get_segment_returns_correct_segment() {
 		if t.fract() == 0. {
 			assert_eq!(
 				segment.get_segment(t),
-				Some(Segment(
+				Some(Segment3(
 					t.fract(),
 					&segment[t as usize],
 					&segment[t as usize]
@@ -43,7 +43,7 @@ fn get_segment_returns_correct_segment() {
 		} else {
 			assert_eq!(
 				segment.get_segment(t),
-				Some(Segment(
+				Some(Segment3(
 					t.fract(),
 					&segment[t as usize],
 					&segment[(t + 1.) as usize]
@@ -55,7 +55,7 @@ fn get_segment_returns_correct_segment() {
 
 #[test]
 fn get_segment_returns_none_on_zero_length_vec() {
-	let segment: Vec<Pose<Vec3d<f64>>> = Vec::new();
+	let segment: Vec<Pose3<Vec3d<f64>>> = Vec::new();
 
 	assert_eq!(segment.get_segment(0.5), None);
 }
@@ -64,13 +64,13 @@ fn get_segment_returns_none_on_zero_length_vec() {
 fn position_correct_straight_line() {
 	let mut segment = Vec::new();
 
-	segment.push(Pose {
+	segment.push(Pose3 {
 		position: Vec3d(0.0f64, 0.0, 0.0),
 		velocity: Vec3d(0.0, 0.0, 0.0),
 		acceleration: Vec3d(0.0, 0.0, 0.0),
 	});
 
-	segment.push(Pose {
+	segment.push(Pose3 {
 		position: Vec3d(0.0f64, 1.0, 0.0),
 		velocity: Vec3d(0.0, 0.0, 0.0),
 		acceleration: Vec3d(0.0, 0.0, 0.0),
@@ -83,21 +83,21 @@ fn position_correct_straight_line() {
 
 #[test]
 fn position_length_zero() {
-	let segment: Vec<Pose<Vec3d<f64>>> = Vec::new();
+	let segment: Vec<Pose3<Vec3d<f64>>> = Vec::new();
 
 	assert_eq!(segment.position_at(0.0), None);
 }
 
 #[test]
 fn velocity_length_zero() {
-	let segment: Vec<Pose<Vec3d<f64>>> = Vec::new();
+	let segment: Vec<Pose3<Vec3d<f64>>> = Vec::new();
 
 	assert_eq!(segment.velocity_at(0.0), None);
 }
 
 #[test]
 fn acceleration_length_zero() {
-	let segment: Vec<Pose<Vec3d<f64>>> = Vec::new();
+	let segment: Vec<Pose3<Vec3d<f64>>> = Vec::new();
 
 	assert_eq!(segment.acceleration_at(0.0), None);
 }
@@ -106,13 +106,13 @@ fn acceleration_length_zero() {
 fn velocity_correct_straight_line_opp_starts() {
 	let mut segment = Vec::new();
 
-	segment.push(Pose {
+	segment.push(Pose3 {
 		position: Vec3d(0.0f64, 0.0, 0.0),
 		velocity: Vec3d(0.0, 1.0, 0.0),
 		acceleration: Vec3d(0.0, 0.0, 0.0),
 	});
 
-	segment.push(Pose {
+	segment.push(Pose3 {
 		position: Vec3d(0.0f64, 1.0, 0.0),
 		velocity: Vec3d(0.0, 0.0, 0.0),
 		acceleration: Vec3d(0.0, 0.0, 0.0),
@@ -127,13 +127,13 @@ fn velocity_correct_straight_line_opp_starts() {
 fn acceleration_correct_curve() {
 	let mut segment = Vec::new();
 
-	segment.push(Pose {
+	segment.push(Pose3 {
 		position: Vec3d(0.0f64, 0.0, 0.0),
 		velocity: Vec3d(0.0, 1.0, 0.0),
 		acceleration: Vec3d(1.0, 0.0, 0.0),
 	});
 
-	segment.push(Pose {
+	segment.push(Pose3 {
 		position: Vec3d(1.0f64, 1.0, 0.0),
 		velocity: Vec3d(1.0, 0.0, 0.0),
 		acceleration: Vec3d(0.0, -1.0, 0.0),
@@ -149,21 +149,21 @@ fn all_set_points_hit() {
 	let mut segment = Vec::new();
 
 	// Start at origin, moving north at 1.0 u/s
-	segment.push(Pose {
+	segment.push(Pose3 {
 		position: Vec3d(0.0f64, 0.0, 0.0),
 		velocity: Vec3d(0.0, 1.0, 0.0),
 		acceleration: Vec3d(0.0, 0.0, 0.0),
 	});
 
 	// Stop at (0,1,0)
-	segment.push(Pose {
+	segment.push(Pose3 {
 		position: Vec3d(0.0f64, 1.0, 0.0),
 		velocity: Vec3d(0.0, 0.0, 0.0),
 		acceleration: Vec3d(0.0, 0.0, 0.0),
 	});
 
 	// Accelerate through (0,2,0), moving north at 1.0 u/s
-	segment.push(Pose {
+	segment.push(Pose3 {
 		position: Vec3d(0.0f64, 2.0, 0.0),
 		velocity: Vec3d(0.0, 1.0, 0.0),
 		acceleration: Vec3d(0.0, 0.0, 0.0),
