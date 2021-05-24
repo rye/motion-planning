@@ -53,7 +53,7 @@ where
 
 		let t = t.fract();
 
-		assert!(0.0_f64 <= t && t <= 1.0_f64, "{} not in [0., 1.]", t);
+		assert!((0.0_f64..=1.0_f64).contains(&t), "{} not in [0., 1.]", t);
 
 		Some(Segment2(t, prec, succ))
 	}
