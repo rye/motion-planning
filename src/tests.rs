@@ -3,28 +3,26 @@ use super::*;
 
 #[test]
 fn get_segment_returns_correct_segment() {
-	let mut segment = Vec::new();
-
-	// Start at origin, moving north at 1.0 u/s
-	segment.push(Pose3 {
-		position: Vec3d(0.0f64, 0.0, 0.0),
-		velocity: Vec3d(0.0, 1.0, 0.0),
-		acceleration: Vec3d(0.0, 0.0, 0.0),
-	});
-
-	// Stop at (0,1,0)
-	segment.push(Pose3 {
-		position: Vec3d(0.0f64, 1.0, 0.0),
-		velocity: Vec3d(0.0, 0.0, 0.0),
-		acceleration: Vec3d(0.0, 0.0, 0.0),
-	});
-
-	// Accelerate through (0,2,0), moving north at 1.0 u/s
-	segment.push(Pose3 {
-		position: Vec3d(0.0f64, 2.0, 0.0),
-		velocity: Vec3d(0.0, 1.0, 0.0),
-		acceleration: Vec3d(0.0, 0.0, 0.0),
-	});
+	let segment = vec![
+		// Start at origin, moving north at 1.0 u/s
+		Pose3 {
+			position: Vec3d(0.0f64, 0.0, 0.0),
+			velocity: Vec3d(0.0, 1.0, 0.0),
+			acceleration: Vec3d(0.0, 0.0, 0.0),
+		},
+		// Stop at (0,1,0)
+		Pose3 {
+			position: Vec3d(0.0f64, 1.0, 0.0),
+			velocity: Vec3d(0.0, 0.0, 0.0),
+			acceleration: Vec3d(0.0, 0.0, 0.0),
+		},
+		// Accelerate through (0,2,0), moving north at 1.0 u/s
+		Pose3 {
+			position: Vec3d(0.0f64, 2.0, 0.0),
+			velocity: Vec3d(0.0, 1.0, 0.0),
+			acceleration: Vec3d(0.0, 0.0, 0.0),
+		},
+	];
 
 	let subdiv = 4.;
 
