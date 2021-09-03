@@ -1,3 +1,4 @@
+use crate::Dot;
 use core::ops::{Add, Mul, Neg};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -41,6 +42,48 @@ mod display {
 	#[test]
 	fn display_3() {
 		assert_eq!(format!("{}", Vecn([1.0, 2.0, 3.0])), "(1,2,3)");
+	}
+}
+
+impl<V, const N: usize> Dot for Vecn<V, N>
+where
+	V: Add<V, Output = V>,
+	V: Mul<V, Output = V>,
+	V: core::iter::Sum,
+	V: Copy,
+{
+	type Output = V;
+	fn dot(&self, other: &Self) -> Self::Output {
+		let self_coords = self.0.iter();
+		let other_coords = other.0.iter();
+		self_coords.zip(other_coords).map(|(a, b)| *a * *b).sum()
+	}
+}
+
+#[cfg(test)]
+mod dot {
+	use super::Vecn;
+	use crate::Dot;
+
+	#[test]
+	fn dot_1_correct() {
+		let x_bar: Vecn<_, 1> = Vecn([1.0]);
+		let y_bar: Vecn<_, 1> = Vecn([1.0]);
+		assert_eq!(x_bar.dot(&y_bar), 1.0);
+	}
+
+	#[test]
+	fn dot_2_correct() {
+		let x_bar: Vecn<_, 2> = Vecn([1.0, 0.0]);
+		let y_bar: Vecn<_, 2> = Vecn([0.0, 1.0]);
+		assert_eq!(x_bar.dot(&y_bar), 0.0);
+	}
+
+	#[test]
+	fn dot_3_correct() {
+		let x_bar: Vecn<_, 3> = Vecn([1.0, 0.0, 0.0]);
+		let z_bar: Vecn<_, 3> = Vecn([0.0, 0.0, 1.0]);
+		assert_eq!(x_bar.dot(&z_bar), 0.0);
 	}
 }
 
