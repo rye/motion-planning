@@ -8,6 +8,7 @@ use hermite::{
 };
 
 pub mod vec;
+pub mod vecn;
 
 #[derive(Debug, PartialEq)]
 pub struct Pose3<V> {
