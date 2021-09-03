@@ -1,4 +1,4 @@
-use core::ops::{Add, Mul};
+use core::ops::{Add, Mul, Neg};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Vecn<V, const N: usize>([V; N]);
@@ -130,5 +130,43 @@ mod mul {
 	fn mul_2b() {
 		let x_bar: Vecn<_, 2> = Vecn([1.0, 3.0]);
 		assert_eq!(x_bar * 0.0, Vecn([0.0, 0.0]));
+	}
+}
+
+impl<V, const N: usize> Neg for Vecn<V, N>
+where
+	V: Neg<Output = V>,
+	V: Copy,
+{
+	type Output = Self;
+
+	fn neg(self) -> Self::Output {
+		// TODO: Once rust-lang/rust#75243 (array_map) is stabilized, this can be replaced by:
+		//
+		//     Self(self.0.map(|n| n.neg()))
+
+		use std::convert::TryInto;
+
+		let new_coords: Vec<V> = self.0.iter().map(|c| (*c).neg()).collect();
+		assert!(new_coords.len() == N, "neg result was incorrect length");
+		let new_coords: [V; N] = new_coords.try_into().ok().unwrap();
+		Vecn(new_coords)
+	}
+}
+
+#[cfg(test)]
+mod neg {
+	use super::Vecn;
+
+	#[test]
+	fn neg_1() {
+		let vec: Vecn<_, 1> = Vecn([1.0]);
+		assert_eq!(-vec, Vecn([-1.0]));
+	}
+
+	#[test]
+	fn neg_2() {
+		let vec: Vecn<_, 2> = Vecn([1.0, 2.0]);
+		assert_eq!(-vec, Vecn([-1.0, -2.0]));
 	}
 }
