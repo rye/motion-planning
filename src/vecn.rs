@@ -1,4 +1,4 @@
-use core::ops::Add;
+use core::ops::{Add, Mul};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Vecn<V, const N: usize>([V; N]);
@@ -88,5 +88,47 @@ mod add {
 		let x_bar: Vecn<_, 2> = Vecn([1.0, 2.0]);
 		let y_bar: Vecn<_, 2> = Vecn([2.0, 4.0]);
 		assert_eq!(x_bar + y_bar, Vecn([3.0, 6.0]));
+	}
+}
+
+impl<T, V, const N: usize> Mul<T> for Vecn<V, N>
+where
+	T: Mul<V, Output = T> + Copy,
+	V: Copy,
+{
+	type Output = Vecn<T, N>;
+	fn mul(self, scalar: T) -> Self::Output {
+		use core::convert::TryInto;
+
+		// TODO: Once rust-lang/rust#75243 (array_map) is stabilized, this can be replaced by
+		//
+		//     Vecn(self.0.map(|coord| scalar * *coord));
+		let coords: Vec<_> = self.0.iter().map(|coord| scalar * *coord).collect();
+		let coords: [T; N] = coords.try_into().ok().unwrap();
+
+		Vecn(coords)
+	}
+}
+
+#[cfg(test)]
+mod mul {
+	use super::Vecn;
+
+	#[test]
+	fn mul_1() {
+		let x_bar: Vecn<_, 1> = Vecn([1.0]);
+		assert_eq!(x_bar * 2.0, Vecn([2.0]));
+	}
+
+	#[test]
+	fn mul_2a() {
+		let x_bar: Vecn<_, 2> = Vecn([1.0, 3.0]);
+		assert_eq!(x_bar * 2.0, Vecn([2.0, 6.0]));
+	}
+
+	#[test]
+	fn mul_2b() {
+		let x_bar: Vecn<_, 2> = Vecn([1.0, 3.0]);
+		assert_eq!(x_bar * 0.0, Vecn([0.0, 0.0]));
 	}
 }
