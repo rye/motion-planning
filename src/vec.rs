@@ -1,9 +1,6 @@
 use core::ops::{Add, Mul, Neg};
 use core::{convert::From, fmt};
 
-#[cfg(test)]
-use super::assert_f64_roughly_eq;
-
 #[allow(clippy::module_name_repetitions)]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Vec3d<V>(pub V, pub V, pub V);
@@ -58,65 +55,97 @@ where
 	}
 }
 
-impl<V> Vec3d<V>
+impl<V> crate::Dot for Vec3d<V>
 where
 	V: Add<V, Output = V> + Copy + Mul<V, Output = V>,
 {
-	pub fn dot(&self, other: &Vec3d<V>) -> V {
+	type Output = V;
+	fn dot(&self, other: &Self) -> Self::Output {
 		(self.0 * other.0) + (self.1 * other.1) + (self.2 * other.2)
 	}
 }
 
-#[test]
-fn vec_addition() {
-	let a: Vec3d<f32> = Vec3d(1.0, 2.0, 3.0);
-	let b: Vec3d<f32> = Vec3d(5.0, 4.0, 3.0);
+#[cfg(test)]
+mod add {
+	use super::Vec3d;
 
-	assert_eq!(a + b, Vec3d(6., 6., 6.));
+	#[test]
+	fn it_works() {
+		let a: Vec3d<f32> = Vec3d(1.0, 2.0, 3.0);
+		let b: Vec3d<f32> = Vec3d(5.0, 4.0, 3.0);
+
+		assert_eq!(a + b, Vec3d(6., 6., 6.));
+	}
 }
 
-#[test]
-fn vec_display() {
-	let v: Vec3d<f32> = Vec3d(0., 1.25, 4.);
+#[cfg(test)]
+mod mul {
+	use super::Vec3d;
 
-	assert_eq!(format!("{}", v), "(0,1.25,4)");
+	#[cfg(test)]
+	mod scalar {
+		use super::Vec3d;
+
+		#[test]
+		fn smul_f64() {
+			let a: Vec3d<f64> = Vec3d(1.0, 2.0, 3.0);
+			let b: f64 = 2.0;
+
+			assert_eq!(a * b, Vec3d(2.0f64, 4.0f64, 6.0f64));
+		}
+
+		#[test]
+		fn smul_f32() {
+			let a: Vec3d<f32> = Vec3d(1.0, 2.0, 3.0);
+			let b: f32 = 2.0;
+
+			assert_eq!(a * b, Vec3d(2.0f32, 4.0f32, 6.0f32));
+		}
+
+		#[test]
+		fn smul_v_f32_s_f64() {
+			let a: Vec3d<f32> = Vec3d(1.0, 2.0, 3.0);
+			let b: f64 = 2.0;
+
+			assert_eq!(a * b, Vec3d(2.0f64, 4.0f64, 6.0f64));
+		}
+	}
 }
 
-#[test]
-fn vec_negation() {
-	let vec: Vec3d<f32> = Vec3d(1.0, 2.0, 3.0);
+#[cfg(test)]
+mod neg {
+	use super::Vec3d;
 
-	assert_eq!(-vec, Vec3d(-1.0, -2.0, -3.0));
+	#[test]
+	fn it_works() {
+		let vec: Vec3d<f32> = Vec3d(1.0, 2.0, 3.0);
+
+		assert_eq!(-vec, Vec3d(-1.0, -2.0, -3.0));
+	}
 }
 
-#[test]
-fn vec_scalar_multiplication_f64() {
-	let a: Vec3d<f64> = Vec3d(1.0, 2.0, 3.0);
-	let b: f64 = 2.0;
+#[cfg(test)]
+mod display {
+	use super::Vec3d;
 
-	assert_eq!(a * b, Vec3d(2.0f64, 4.0f64, 6.0f64));
+	#[test]
+	fn it_works() {
+		let v: Vec3d<f32> = Vec3d(0., 1.25, 4.);
+
+		assert_eq!(format!("{}", v), "(0,1.25,4)");
+	}
 }
 
-#[test]
-fn vec_scalar_multiplication_f32() {
-	let a: Vec3d<f32> = Vec3d(1.0, 2.0, 3.0);
-	let b: f32 = 2.0;
+#[cfg(test)]
+mod dot {
+	use super::Vec3d;
+	use crate::{assert_f64_roughly_eq, Dot};
 
-	assert_eq!(a * b, Vec3d(2.0f32, 4.0f32, 6.0f32));
-}
+	#[test]
+	fn it_works() {
+		let a: Vec3d<f64> = Vec3d(1., 2., 3.);
+		let b: Vec3d<f64> = Vec3d(5., 4., 3.);
 
-#[test]
-fn vec_scalar_multiplication_vf32_sf64() {
-	let a: Vec3d<f32> = Vec3d(1.0, 2.0, 3.0);
-	let b: f64 = 2.0;
-
-	assert_eq!(a * b, Vec3d(2.0f64, 4.0f64, 6.0f64));
-}
-
-#[test]
-fn vec_dot() {
-	let a: Vec3d<f64> = Vec3d(1., 2., 3.);
-	let b: Vec3d<f64> = Vec3d(5., 4., 3.);
-
-	assert_f64_roughly_eq!(a.dot(&b), 22.0_f64);
+		assert_f64_roughly_eq!(a.dot(&b), 22.0_f64);
+	}
 }
