@@ -10,6 +10,11 @@ use hermite::{
 pub mod vec;
 pub mod vecn;
 
+trait Dot {
+	type Output;
+	fn dot(&self, other: &Self) -> Self::Output;
+}
+
 #[derive(Debug, PartialEq)]
 pub struct Pose3<V> {
 	pub position: V,
